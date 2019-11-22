@@ -35,7 +35,7 @@ button.addEventListener('click', event => {
     alert(videoConstraints.facingMode)
   } else {
     videoConstraints.deviceId = { exact: select.value };
-    alert(JSON.parse(videoConstraints))
+    alert(JSON.stringify(videoConstraints))
   }
   const constraints = {
     video: videoConstraints,
