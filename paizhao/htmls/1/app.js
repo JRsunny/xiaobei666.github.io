@@ -65,7 +65,7 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   var video = document.getElementById('video');
   canvas = document.getElementById('canvasCemara');
   ctx = canvas.getContext('2d');
-  var _w = 300, _h = 600;
+  var _w = 500, _h = 320;
   if (video.videoWidth > 0) _h = video.videoHeight / (video.videoWidth / _w);
   canvas.setAttribute('width', _w);
   canvas.setAttribute('height', _h);
@@ -82,7 +82,7 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
 
   }
   if(getUrlKey('pictureFileid') == 2){  // 反面
-    window.localStorage.setItem('pictureFileback', JSON.stringify(pictureFilefont)); 
+    window.localStorage.setItem('pictureFileback', JSON.stringify(pictureFilefont));
     if(window.localStorage.getItem('pictureFileback')){
 
       window.location.href="./IdCardImage.html?pictureFilefont=2"
