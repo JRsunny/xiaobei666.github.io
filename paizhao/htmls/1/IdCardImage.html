@@ -10,7 +10,7 @@
     <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
 		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
     <link rel="stylesheet" href="../../CardResource/css/base.css" />
-    
+
     <style type="text/css">
       [v-cloak] {
         display: none;
@@ -190,7 +190,7 @@
   <script src="../../CardResource/js/base.js"></script>
   <script src="../../CardResource/js/lrz.all.bundle.js"></script>
   <script src="../../CardResource/js/prompt.js"></script>
-  
+
   <script>
   var app = new Vue({
     el: "#app",
@@ -205,7 +205,7 @@
     },
     created () {
       var  that = this;
-      that.imgBaseUrl = location.protocol + "//" + location.host+"/";
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/htmls";
       if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
     },
     mounted () {
@@ -227,7 +227,7 @@
           this.$refs.idCardImage1.width = '250'
           this.$refs.idCardImage1.height = '160'
         }
-          
+
     },
     methods: {
       getUrlKey: function (name) {
