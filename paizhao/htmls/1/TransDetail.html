@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../CardResource/js/filter.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/js/swiper/swiper.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+       [v-cloak] {
+        display: none;
+      }
+      .TransDetail {
+        margin: 0 auto;
+      }
+      .top {
+        display: flex;
+      }
+      .detEacht {
+        margin-top:0.14rem;
+        background:#fff;
+        margin-left: 0.12rem;
+        margin-right: 0.12rem;
+        width: 3.49rem;
+        border-radius: 0.1rem;
+      }
+      .detEachtTop img {
+        width: 0.18rem;
+        height: 0.18rem;
+        margin-left: 0.14rem;
+      }
+      .detEachtTop {
+        display: flex;
+        margin-top:0.14rem;
+        align-items: center;
+      }
+      .detEachtTop p:nth-child(2){
+        margin-left: 0.12rem;
+        font-size: 0.14rem;
+      }
+      .detEachtTop p:nth-child(3){
+        margin-left: 0.12rem;
+        font-size: 0.12rem;
+        color:#666;
+      }
+      .detEachtTop p:nth-child(4) {
+        margin-left:0.84rem;
+        color:#999;
+      }
+      .chartList {
+        /* width: 45%; */
+        position: absolute;
+        left:60%;
+        font-size: 0.12rem;
+        color:#666666;
+      }
+      #main{
+        height: 110px;
+        width: 110px;
+        /* float: left; */
+        position: absolute;
+        top: 0.3rem;
+        left: 0.3rem;
+      }
+      .chartList .chartIcon{
+        width:10px;
+        height:10px;
+        border-radius:50%;
+        display: inline-block;
+      } 
+      .chartList i {
+        margin-right: 0.12rem;
+      }
+      .chartList span:nth-child(2) {
+        margin-right: 0.12rem;
+      }
+      .detEachtDet {
+        /* display: flex; */
+        position: relative;
+        height: 1.6rem;
+      }
+      .detEachtDetTit {
+        display: flex;
+        align-items: center;
+        margin-top: 0.06rem;
+      }
+      /* 日期 类型 */
+      .dateType {
+        margin-top:0.14rem;
+      }
+      .blueColor {
+        color:#0073e5;
+      }
+      .navBar {
+        display: flex;
+        font-size: 0.14rem;
+        height: 44px;
+        border-bottom: 1px solid #999999;
+        background: #fff;
+        color: #333333;
+        align-items: center;
+        
+      }
+      .navBar div {
+        display: flex;
+        width: 50%;
+        justify-content: center;
+
+      }
+      .navBar div img {
+        width: 0.08rem;
+        height:  0.08rem;
+        margin-top:  0.08rem;
+        margin-left:0.08rem;
+      }
+      /* 内容 */
+      .dataTypeCon {
+        position: absolute;
+        top: 3.09rem;
+        /* left: 6px; */
+        height:8rem;
+        background: #3526261a;
+        width: 100%;
+      }
+      .dataTypeConSel {
+
+      }
+      .dataCon {
+        padding-left:0.14rem;
+        padding-top:0.14rem;
+        padding-right:0.14rem;
+        padding-bottom:0.2rem;
+        background: #fff;
+        color:#333;
+      }
+      .serTime {
+        margin-top:0.14rem;
+      }
+      .serTime span {
+        display: inline-block;
+        text-align: center;
+        line-height: 0.28rem;
+        width:0.76rem;
+        height: 0.28rem;
+        border:1px solid #fff;
+        border-radius: 0.05rem;
+        margin-left:0.1rem;
+      }
+      .btn-select {
+        background:#0073E5;
+        color:#fff;
+      }
+      .btn-noselect {
+        background:#F5F5F5;
+        color:#333;
+      }
+      .serTime span:first-child {
+        margin-left:0rem;
+      }
+      .dataUser {
+        display:flex;
+        justify-content: space-between;
+        margin-top:0.14rem;
+      }
+      .dataUser span:nth-child(2) {
+        color:#999999;
+      }
+      .serTimeUser{
+        display:flex;
+        justify-content: space-between;
+        margin-top:0.14rem;
+      }
+      .serTimeUser span:first-child{
+        color:#00bfff;
+      }
+      .serTimeUser span:nth-child(3){
+        color:#00bfff;
+      }
+      .serTimeUser span:last-child{
+        width: 0.76rem;
+        height: 0.28rem;
+        text-align: center;
+        border: 1px solid #00bfff;
+        border-radius: 0.05rem;
+        /* color: #0073E5; */
+        line-height: 0.28rem;
+      }
+      .typeCon {
+        padding-left:0.14rem;
+        padding-top:0.14rem;
+        padding-right:0.14rem;
+        /* padding-bottom:0.2rem; */
+        background: #fff;
+        color:#333;
+      }
+      .serType span {
+        display: inline-block;
+        text-align: center;
+        line-height: 0.28rem;
+        width:0.76rem;
+        height: 0.28rem;
+        border:1px solid #fff;
+        border-radius: 0.05rem;
+        margin-left:0.1rem;
+        margin-top:0.14rem;
+      }
+      .serType span:first-child {
+        margin-left:0rem;
+      }
+      .serType span:nth-child(5) {
+        margin-left:0rem;
+      }
+      .serType span:nth-child(9) {
+        margin-left:0rem;
+      }
+      .typeAcc {
+        margin-top:0.14rem;
+      }
+      .typeInp {
+        margin-top:0.14rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .typeInp input{
+        width: 1.4rem;
+        height: 0.3rem;
+        border: 1px solid #f2f2f2;
+        padding-left: 0.26rem;
+      }
+      .typeInp p {
+        line-height: 0.3rem;
+        position: absolute;
+        left: 0.26rem;
+      }
+      .typeInp p:nth-child(4) {
+        left:2.32rem;
+      }
+      .typeBtn {
+        margin-top: 0.2rem;
+        height: 0.4rem;
+        border-top: 1px solid #F2F2F2;
+        line-height: 0.4rem;
+        font-size: 0.15rem;
+        display: flex;
+      }
+      .typeBtn span:first-child {
+        border-right: 1px solid #F2F2F2;
+        width: 50%;
+        text-align: center;
+      }
+      .typeBtn span:nth-child(2) {
+        width: 50%;
+        text-align: center;
+        color: #0073e5;
+      }
+      /* 列表 */
+      .detailTime {
+        margin-left: 0.14rem;
+        height: 0.4rem;
+        line-height: 0.4rem;
+        /* text-align: center; */
+        font-size: 0.15rem;
+        color: #333;
+      }
+      .detailTips {
+        background: #fff;
+        padding-left: 0.14rem;
+        padding-top: 0.14rem;
+        padding-right: 0.14rem;
+      }
+      .detailTop {
+        display: flex;
+        align-items: center;
+      }
+      .detailTop img {
+        width: 0.22rem;
+        height: 0.22rem;
+      }
+      .detailTop span:nth-child(2){
+        margin-left: 0.14rem;
+      }
+      .detailTop span:nth-child(3){
+        font-size:0.12rem;
+        color:#999999;
+        margin-left:0.1rem;
+      }
+      .detailTop span:nth-child(4) {
+        position: absolute;
+        right: 0.34rem;
+        color:#47b347;
+        /* margin-left: 1rem; */
+      }
+      .right {
+        width: 0.08rem;
+        position: absolute;
+        /* height: 10px; */
+        right: 0.14rem;
+      }
+      .detailCenter {
+        font-size: 0.12rem;
+        margin-top: 0.14rem;
+        color: #333;
+        display: flex;
+      }
+      .detailCenter span:nth-child(2){
+        margin-left: 0.14rem;
+      }
+      .detailCenter span:nth-child(3) {
+        /* color:#47b347; */
+        margin-left: 1rem;
+      }
+      .detailRemark {
+        height: 0.4rem;
+        border-top: 1px solid #f2f2f2;
+        line-height: 0.4rem;
+        color: #cccccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between
+      }
+      .detailRemark img {
+        width: 0.22rem;
+      }
+      .bodyY {
+        overflow: hidden;
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="TransDetail" id="scrollIndex">
+        <div class="common-header">交易明细查询</div>
+        <!-- 图表是个轮播 -->
+        <div>
+          <!-- 轮播内容 -->
+          <div class="swiper-container" id="proMainPic">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide" v-for="items in topAllDatas">
+                <div class="top">
+                  <div class="detEacht">
+                    <!-- 头部银行卡信息 -->
+                    <div class="detEachtTop" v-for = "item1 in items.cardInfo">
+                      <img :src='imgBaseUrl+"CardResource/img/logo.png"'>
+                      <p>{{item1.bankName}}</p>
+                      <p>{{item1.bankTit}}/{{item1.bankNum}}</p>
+                      <p>{{item1.bankType}}</p>
+                    </div>
+                    <!-- 绘图 -->
+                    <div class="detEachtDet">
+                      <div id="main"></div>
+                      <!-- 右侧文字 -->
+                      <div class="chartList">
+                        <div class="detEachtDetTit" v-for="item2 in items.chartListRight">
+                          <i class="chartIcon" :style="{background:item2.wordColor}"></i>
+                          <span v-text="item2.word"></span>
+                          <span class="" v-text="item2.pid" :style="{color:item2.wordColor}">53.0%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="swiper-slide">测试2</div> -->
+              <!-- <div class="swiper-slide">测试3</div> -->
+            </div>
+          </div>
+        </div>
+        
+        <!-- 日期 类型切换 -->
+        <div>
+          <!-- 顶部 -->
+          <div class="dateType">
+            <div class="navBar">
+              <div @click="cliTab('date')">
+                <span :class="{blueColor:dateTabShow}">日期</span>
+                <img v-if="!dateTabShow" :src='imgBaseUrl+"CardResource/img/huiUp.png"' >
+                <img v-if="dateTabShow" :src='imgBaseUrl+"CardResource/img/lanDown.png"'>
+              </div>
+              <div @click="cliTab('type')">
+                <span :class="{blueColor:typeTabShow}">类型</span>
+                <img v-if="!typeTabShow" :src='imgBaseUrl+"CardResource/img/huiUp.png"'>
+                <img v-if="typeTabShow" :src='imgBaseUrl+"CardResource/img/lanDown.png"'>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- 交易详情列表 -->
+        <div class="detail" ref="detail">
+          <div class="detailTime">2017年5月</div>
+          <div class="detailTips" v-for="item in billDatas">
+            <div >
+              <div  class="detailTop">
+                <img :src='imgBaseUrl+item.leftRight'>
+                <span>{{item.topBigTips}}</span>
+                <span>{{item.topSmallTips}}</span>
+                <span>{{item.account}}元</span>
+              </div>
+              <img class="right" :src='imgBaseUrl+"CardResource/img/right.png"'>
+              <div class="detailCenter">
+                <span>{{item.type}}</span>
+                <span>{{item.date}}</span>
+                <span>留言：{{item.leaveWord}}</span>
+              </div>
+            </div>
+            <!-- 备注： -->
+            <div class="detailRemark">
+              <input type="text" placeholder="点击此处添加备注">
+              <img class="" :src='imgBaseUrl+"CardResource/img/copy.png"'>
+            </div>
+          </div>
+          <div class="p-tb-15 color-text text-center"><p id="pullUp">上划加载更多</p></div>
+        </div>
+        <!-- <div class="weui-btn common-btn" @click="nextBtn">下一步</div> -->
+        <!-- 内容 -->
+          <div :class="{dataTypeCon:dateTabShow || typeTabShow}" v-show ="dateTabShow || typeTabShow"  @click.self="dataTypeConBtn()">
+            <!-- 日期 -->
+            <div class="dataCon" v-show="dateTabShow">
+              <p>查询时间</p>
+              <div class="serTime" >
+                <span :class="allSelect.timeSelect == item ? 'btn-select' : 'btn-noselect'"  v-for="(item,index) in serTimeBtn" @click.stop="serTimeSelect(item,index)">{{item}}</span>
+              </div>
+              <div class="dataUser">
+                  <span>自定义</span>
+                  <span>最长可查找时间跨度一年的交易</span>
+              </div>
+              <div class="serTimeUser">
+                  <span @click.stop="datePicker('start')">{{startDate | dataStrone}}</span>
+                  <span>至</span>
+                  <span @click.stop="datePicker('end')">{{endDate | dataStrone}}</span>
+                  <span @click.stop="customBtn()">确定</span>
+              </div>
+            </div>
+            <!-- 类型 -->
+            <div class="typeCon"  v-show="typeTabShow">
+              <p>快捷筛选</p>
+              <div>
+                <div class="serType">
+                    <!-- <span></span> -->
+                    <span :class="allSelect.typeSelect == item ? 'btn-select' : 'btn-noselect'"  v-for="(item,index) in serTypeBtn" @click.stop="serTypeSelect(item,index)">{{item}}</span>
+                </div>
+              </div>
+              <p class="typeAcc">金额</p>
+              <div class="typeInp">
+                <p>￥</p>
+                <input type="text" placeholder="最低金额" @click.stop="" v-model="lowAccunt">
+                <span>-----</span>
+                <p>￥</p>
+                <input type="text" placeholder="最高金额" @click.stop="" v-model="upAccunt">
+              </div>
+              <div class="typeBtn">
+                <span @click.stop="typeBtnCanl">取消</span>
+                <span @click.stop="typeBtnSucc">确定</span>
+              </div>
+            </div>
+          </div>
+      </div> 
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/swiper/swiper.min.js"></script>
+  <script src="../../CardResource/js/iscroll-probe.js"></script>
+  <script src="../../CardResource/js/echarts.min.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      // 日期查询数组
+      serTimeBtn: ['7天','一个月','三个月',"半年"],
+      serTypeBtn: ['全部','消费','转账','理财','缴费','现金','结息','转入','转出','外汇','其他'],
+      // 顶图数据：塞多个图表？图表数据渲染？服务端能查到的数据结构
+      topAllDatas: [
+        {
+          cardInfo:[
+            {
+              bankLogo: '../../CardResource/img/logo.png',
+              bankName:'中原银行',
+              bankTit:'工资卡',
+              bankNum: '3490',
+              bankType: '储蓄卡'
+            }
+          ],
+          chartListRight:[
+            {
+              word: '转账',
+              pid:'53%',
+              wordColor:"#ff531a"
+            },
+            {
+              word: '理财',
+              pid:'45%',
+              wordColor:"#00bfff"
+            },
+            {
+              word: '消费',
+              pid:'45%',
+              wordColor:"#668cff"
+            },
+            {
+              word: '缴费',
+              pid:'45%',
+              wordColor:"#ffb266"
+            },
+            {
+              word: '外汇',
+              pid:'45%',
+              wordColor:"#ffc619"
+            },
+            {
+              word: '其他',
+              pid:'45%',
+              wordColor:"#ff8c66"
+            }
+          ]
+        },
+        {
+          cardInfo:[
+            {
+              bankLogo: '../../CardResource/img/logo.png',
+              bankName:'电子账户',
+              bankTit:'白金卡',
+              bankNum: '8888',
+              bankType: '信用卡'
+            }
+          ],
+          chartListRight:[
+            {
+              word: '转账',
+              pid:'53%',
+              wordColor:"#ff531a"
+            },
+            {
+              word: '理财',
+              pid:'45%',
+              wordColor:"#00bfff"
+            },
+            {
+              word: '消费',
+              pid:'45%',
+              wordColor:"#668cff"
+            },
+            {
+              word: '缴费',
+              pid:'45%',
+              wordColor:"#ffb266"
+            },
+            {
+              word: '外汇',
+              pid:'45%',
+              wordColor:"#ffc619"
+            },
+            {
+              word: '其他',
+              pid:'45%',
+              wordColor:"#ff8c66"
+            }
+          ]
+        }
+      ],
+      dateTabShow: false,
+      typeTabShow: false,
+      lowAccunt: '',
+      upAccunt: '',
+      startDate: '20190305',
+      endDate: '20300305',
+      allSelect:{
+        timeSelect: '7天',
+        typeSelect: '全部'
+      },
+      billDatas: [
+        // 转账
+        {
+          leftRight:'CardResource/img/trans.png',
+          topBigTips: '转账给张三（好友）',
+          topSmallTips: '',
+          account:'-500',
+          type:'转账',
+          date: '05-31 12:33',
+          leaveWord: '昨日聚会消费'
+        },
+        {
+          leftRight:'CardResource/img/expiry.png',
+          topBigTips: '结息',
+          topSmallTips: '',
+          account:'+500',
+          type:'结息',
+          date: '05-31 12:33',
+          leaveWord: '买了个大熊猫'
+        },
+        {
+          leftRight:'CardResource/img/water.png',
+          topBigTips: '我家水费',
+          topSmallTips: '',
+          account:'-500',
+          type:'缴费',
+          date: '05-31 12:33',
+          leaveWord: '买了个西湖'
+        },
+        {
+          leftRight:'CardResource/img/manage.png',
+          topBigTips: '购买理财',
+          topSmallTips: '',
+          account:'-500',
+          type:'理财',
+          date: '05-31 12:33',
+          leaveWord: '买了个理财产品'
+        },
+        {
+          leftRight:'CardResource/img/manage.png',
+          topBigTips: '乐购超市',
+          topSmallTips: '刷卡消费',
+          account:'+500',
+          type:'消费',
+          date: '05-31 12:33',
+          leaveWord: '逛了个超市'
+        },
+        {
+          leftRight:'CardResource/img/manage.png',
+          topBigTips: '乐购超市',
+          topSmallTips: '刷卡消费',
+          account:'+500',
+          type:'消费',
+          date: '05-31 12:33',
+          leaveWord: '逛了个超市'
+        },
+        {
+          leftRight:'CardResource/img/zu.png',
+          topBigTips: '张山',
+          topSmallTips: '超级网银转账给您',
+          account:'+500',
+          type:'消费',
+          date: '05-31 12:33',
+          leaveWord: '转了个账'
+        },
+        {
+          leftRight:'CardResource/img/overseas.png',
+          topBigTips: '境外外汇汇款',
+          topSmallTips: '',
+          account:'+500',
+          type:'其他',
+          date: '05-31 12:33',
+          leaveWord: '汇了个小款'
+        },
+        {
+          leftRight:'CardResource/img/money.png',
+          topBigTips: '现金',
+          topSmallTips: '',
+          account:'+500',
+          type:'其他',
+          date: '05-31 12:33',
+          leaveWord: '逛了个超市'
+        }
+      ],
+      proList:[]
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+      // that.loading = weui.loading('loading……');
+      // setTimeout(function(){
+      //   that.loading.hide(function(){})
+      // },500);
+      this.getDetailInfo ()
+    },
+    mounted () {
+      // this.isLoading = weui.loading('加载中');
+      var  ua = window.navigator.userAgent.toLowerCase();
+      if(ua.match(/MicroMessenger/i)=='micromessenger'){
+        // this.jsSDKInit();
+      };
+      // console.log(this.$refs.detail.offsetHeight)
+      this.showMainPic()
+      this.eCharts()
+    },
+    methods: {
+      // 当前时间 拿服务端时间
+      // type(0:7天,1:一个月,2：三个月，3 半年)
+      getWeekDate (date,type) {
+        if (type === 0) {
+          date = new Date (date-7*24*3600*1000)
+        }else if (type === 1) {
+          date.setMonth(date.getMonth()-1) 
+        }else if (type === 2) {
+          date.setMonth(date.getMonth()-3) 
+        }else if (type === 3) {
+          date.setMonth(date.getMonth()-6) 
+        }
+        var  y = date.getFullYear();
+        var  m = date.getMonth() + 1
+        m<10?m = '0'+m : m 
+        var  d = date.getDate()
+        d<10?d = '0'+ d : d 
+        var  formatDate = y+""+m+d+'' 
+        return formatDate
+      },
+      // 上拉加载更多……
+      pullupRefensh () {
+        var pullUp = document.getElementById('pullUp');
+        var that = this;
+        console.log(pullUp)
+        setTimeout(that.initIScroll, 200);
+        document.addEventListener('touchmove', function(e) {
+          e.preventDefault();
+        }, false);
+        // this.isLoading.hide();
+      },
+      initIScroll () {
+        var that = this;
+        that.myScroll = new IScroll('#scrollIndex', { probeType: 3, mouseWheel: true, click: true, preventDefault: false});
+        console.log(that.myScroll)
+        if(that.proList.length>0) {
+          that.myScroll.on('scroll', function(){
+            if(that.myScroll.maxScrollY - 20 > that.myScroll.y && !pullUp.className.match('allShow')) {
+              pullUp.className = 'flip';
+              pullUp.innerText = '松开加载更多';
+              that.myScroll.maxScrollY = that.myScroll.maxScrollY;
+            }
+          });
+          // that.myScroll.on('scrollEnd', function() {
+          //   if (pullUp.className.match('flip')) {
+          //     pullUp.className = 'loading';
+          //     pullUp.innerHTML = '正在加载...';
+          //     that.ShowMore();
+          //   }
+          // })
+        }
+      },
+      // 账号信息
+      
+      // 查询接口
+      getDetailInfo (BeginDate,EndDate,TransClass) {
+        var  that = this
+        var  parmars = {  
+          "WeixinId": '123456',
+          "AccountNo": '6236606100296513' ,//我的账户
+          "BeginDate":BeginDate, // 开始日期
+          "EndDate": EndDate, // 结束日期
+          "TransClass": TransClass // 交易类型
+        }
+        // that.proList = that.billDatas
+        // this.pullupRefensh()
+       console.log('交易明细查询上送---->', JSON.stringify(parmars, null, 2))
+       var  url = zyHost+'/pweixin/DealRecordListQry.do'
+      	ajaxPost(url, parmars, function (data) {
+       // var  data = JSON.parse(data1)
+        console.log('交易明细查询结果---->', JSON.stringify(data, null, 2))
+         if (data._RejCode === '000000') {
+        	 console.log("交易明细")
+         } else {
+            alert(data.RetMsg)
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      },
+      // 轮播
+      showMainPic () {
+        var mySlider = new Swiper('#proMainPic', {
+          autoplay: true,
+          // autoHeight: true,
+          // loop: true,
+          // pagination: {
+          //   el: '.nmetal-pro-pagination',
+          // },
+        });
+      },
+      // 点击日期，日期列表显示出来，颜色变蓝，图表变蓝
+      cliTab (msg) {
+        console.log(document.querySelector('body'))
+        document.querySelector('body').classList.add('bodyY')
+        if (msg === 'date') {
+          this.dateTabShow = true
+          this.typeTabShow = false
+        } else if (msg === 'type') {
+          this.dateTabShow = false
+          this.typeTabShow = true
+        }
+      },
+      // 关闭弹层
+      dataTypeConBtn () {
+        this.dateTabShow = false
+        this.typeTabShow = false
+        document.querySelector('body').classList.remove('bodyY')
+      },
+      // 确定自定义时间,查询交易
+      customBtn () {
+        console.log(this.startDate,this.endDate)
+        this.dataTypeConBtn()
+        this.getDetailInfo (this.startDate,this.endDate,'date')
+      },
+      // 日期筛选类型
+      serTimeSelect (item,index) {
+        // 先拿当前日期，后面换成服务端日期
+        var  date = new Date()
+        this.allSelect.timeSelect = item;
+        var  endDate = this.getWeekDate(date,index)
+        // 查询交易
+        this.getDetailInfo (date,endDate,'date')
+      },
+      serTypeSelect (item,index) {
+        this.allSelect.typeSelect = item;
+        // 查询交易
+        console.log(this.startDate,this.endDate)
+        this.getDetailInfo (this.startDate,this.endDate,item)
+        console.log(item,index)
+      },
+      // 类型取消按钮
+      typeBtnCanl () {
+        this.dataTypeConBtn()
+        // this.typeTabShow = false
+      },
+      typeBtnSucc () {
+        this.dataTypeConBtn()
+        // this.typeTabShow = false
+        // 查询交易,上送带有金额?
+        this.getDetailInfo (this.lowAccunt,this.upAccunt,'typeAccount')
+      },
+      // 日期组件
+      datePicker (type) {
+        // if (type)
+        var  that = this
+        weui.datePicker({
+          start: new Date(),
+          end: 2030,
+          // defaultValue: [2020,6,8],
+          onChange: function (res) {
+            // console.log(type)
+            //  console.log("change:"+res)
+          },
+          onConfirm: function (res) {
+            // 日期格式化
+            res[1].value <10 ? res[1].value = '0' + res[1].value : res[1].value
+            res[2].value <10 ? res[2].value = '0' + res[2].value : res[2].value
+            if (type === 'start') {
+              that.startDate = res[0].value + '' + res[1].value + '' + res[2].value 
+            } else if (type === 'end') {
+              that.endDate = res[0].value + '' + res[1].value + '' + res[2].value
+            }
+          },
+          id: 'datePicker' 
+        })
+      },
+      // 绘图
+      eCharts () {
+        var  myChart = echarts.init(document.getElementById('main'));
+        // console.log(document.getElementById('main'))
+        // 指定图表的配置项和数据
+        var option = {     
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: '100%',
+              // center:['100%','100%'],
+              hoverAnimation: false,
+              labelLine: {
+                normal: {
+                  show: false
+                }
+              },
+              data: [
+                {
+                  value: 15
+                },
+                {
+                  value: 40
+                },
+                {
+                  value: 5
+                },
+                {
+                  value: 10
+                },
+                {
+                  value: 10
+                },{
+                  value: 20
+                }
+              ],
+              color: ['#668cff', '#00bfff',  '#ff531a','#ff8c66', '#ffb266' ,'#ffc619']
+            }
+          ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        // console.log(myChart.setOption())
+        myChart.setOption(option);
+      },
+      nextBtn () {
+        window.location.href = 'SetKeyBorad.html'
+      }
+    }
+  })
+  </script>
+</html>

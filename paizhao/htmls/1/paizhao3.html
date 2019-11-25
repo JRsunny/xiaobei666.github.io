@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Camera selection</title>
+  <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+  <link rel="stylesheet" href="../../CardResource/css/base.css" />
+  <link rel="stylesheet" href="./app.css" />
+
+</head>
+
+<body>
+
+  <header>
+    <h1>相机识别 原生模拟</h1>
+  </header>
+
+  <main>
+    <div class="controls">
+      <button id="button">选择摄像头-camera</button>
+      <select id="select">
+        <option></option>
+      </select>
+    </div>
+    <!-- <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="./shenfen1.png"> -->
+    <video id="video" autoplay playsinline  style="width:500px;height:500px;"></video>
+
+    <canvas id="canvasCemara" class="canvasCemara" width="400" height="600"></canvas>
+  </main>
+
+  <footer>
+    <p>
+      <a href="#" id="btn-paizhao">拍照</a>
+    </p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>

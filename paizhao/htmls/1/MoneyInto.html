@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../CardResource/js/filter.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+       [v-cloak] {
+        display: none;
+      }
+      .MoneyInto {
+        margin:0 auto;
+      }
+      .bankInfo {
+        background:#ffffff;
+        /* padding-left:0.15rem; */
+      }
+      .MoneyInto .common {
+        display: flex;
+        height: 0.44rem;
+        line-height: 0.44rem;
+        font-size: 0.14rem;
+        align-items: center;
+        padding-left:0.15rem;
+      }
+      .common p:first-child{
+        /* margin-left:0.3rem; */
+        width: 0.8rem;
+      }
+      .common p:nth-child(2){
+        margin-left: 0.3rem;
+        width: 2.25rem;
+      }
+      .bankOut {
+        border-bottom:1px solid #CECECE;
+      }
+      .overLang {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .common .img_right1 {
+        width: 0.08rem;
+        height: 0.16rem;
+        /* margin-left:0.7rem; */
+      }
+      .bankInto {
+        border-bottom:1px solid #CECECE;
+      }
+      .MoneyInto .input {
+        margin-left:0.3rem;
+        height: 0.44rem;
+        line-height: 0.3rem;
+        outline: medium;
+        width: 2.4rem;
+        border-bottom:1px solid #CECECE;
+      }
+      .account {
+        padding-left:0.15rem;
+      }
+      .MoneyInto  .account{
+        height: 0.7rem;
+      }
+      .MoneyInto  .account p:first-child{
+        margin-top: 0.1rem;
+      }
+      .accountDiv {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center
+      }
+      .accountDiv img {
+        width:0.16rem;
+        height:0.16rem;
+        margin-right:0.1rem;
+      }
+      .accountDiv p {
+        margin-right:0.14rem;
+      }
+      .accountDiv input {
+        font-size:0.2rem;
+      }
+      .inputAccount {
+        height: 0.48rem;
+        width: 3.3rem;
+        /* border:none; */
+      }
+      .subBtn {
+        color:#fff;
+      }
+      .subDiv {
+        display: flex;
+        justify-content: center;
+        font-size:0.18rem;
+        margin-left:-0.14rem;
+      }
+      .colorBtn {
+        background:#cccccc;
+        color:#999999;
+      }
+      .actionSheetAll {
+        background:#3526261a;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        bottom:0px;
+        left:0px;
+        z-index: 666;
+      }
+      .actionSheet {
+        padding-bottom: 0.3rem;
+        margin:0px;
+        width: 100%;
+        position: absolute;
+        bottom:0px;
+        left:0px;
+        background:#fff;
+        /* border:1px solid #999999; */
+        text-align: center;
+      }
+      .topTips{
+        margin-top:0.14rem;
+        font-size:0.16rem;
+        border-bottom:1px solid #CECECE;
+        height: 0.4rem;
+      }
+      .topTips img {
+        position: absolute;
+        top:0.2rem;
+        right:0.14rem;
+        width: 0.14rem;
+        height: 0.14rem;
+      }
+      .actionBankInfo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.24rem;
+        padding: 0 0.14rem;
+        /* margin-bottom:0.4rem; */
+      }
+      .actionBankInfo img:last-child{
+        width: 0.2rem;
+      }
+      .actionBankInfo div:first-child{
+        display: flex;
+        align-items: center;
+        /* justify-content: flex-start; */
+      }
+      .actionBankInfo div img:first-child{
+        width: 0.2rem;
+        height: 0.2rem;
+        /* margin-left:1.09rem; */
+      }
+      .payCard {
+        margin-left:0.14rem;
+        text-align: left;
+      }
+     
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="MoneyInto" v-show="!isAgreementShow">
+          <div class="common-header">资金转入</div>
+          <div class="bankInfo">
+            <div class="common bankOut" @click="action">
+                <p>绑定卡号</p>
+                <p class="overLang">{{bankOutInfo.bankOutNum | cardTrim2}}/{{bankOutInfo.bankOutName}}</p>
+                <img class="img_right1" :src='imgBaseUrl+"CardResource/img/right.png"'>
+            </div>
+            <div class="common bankInto">
+                <p>收款卡号</p>
+                <p>{{intopBankNum}}</p>
+                <!-- <input class="input inputNum" v-model="intopBankNum" placeholder="请输入银行卡号" @keyup="keyUpBankNum" oninput="if(value.length>26)value=value.slice(0,26)" type="tel"/> -->
+                <!-- <input  class="input" placeholder="" /> -->
+            </div>
+            <div class="account">
+              <p>金额</p>
+              <div class="accountDiv">
+                <input  v-model="AccountNum" class="inputAccount" placeholder="请输入金额" @keyup="accountKeyUp" @blur="accountBlur" type="tel"/>
+                <img v-show="delImg" :src="imgBaseUrl+'CardResource/img/del.png'" @click="delImgClick">
+                <p>元</p>
+              <div>
+            </div>
+          </div>
+          
+          <div class="subDiv">
+            <button class="common-btn subBtn" @click="toPage('TransferResult','MoneyInto')">提交</button>
+          </div>   
+          
+        </div>
+        </div>
+      <!-- 银行卡下拉列表 -->
+      <div v-if='actionShow' class="actionSheetAll" @click.self="bankListBtn">
+        <div class="actionSheet" >
+          <div class="topTips">
+            <p>选择账号</p>
+            <img :src="imgBaseUrl+'CardResource/img/AddContact.png'" @click.stop="closeSheet">
+          </div>
+          <div class="actionBankInfo" v-for="(addBankInfo,index) in addBankInfos" @click.stop="seclectBank(addBankInfo,index)">
+            <div >
+              <!-- <img :src="addBankInfo.img"> -->
+              <img :src="imgBaseUrl+ addBankInfo.logo">
+              <div class="payCard">
+                <div>
+                  <span>{{addBankInfo.cardName}}/</span>
+                  <span>{{addBankInfo.cardNum | cardTrim2}}</span>
+                </div>
+              </div>
+            </div>
+            <img :src="imgBaseUrl+'CardResource/img/duihao.png'" v-if="bankOutInfo.bankOutNum === addBankInfo.cardNum">
+          </div>
+          <!-- 添加银行卡的单独处理 -->
+          <!-- <div class="actionBankInfo" @click="addBankCard">
+            <div >
+              <img :src="imgBaseUrl+'CardResource/img/addbank.png'">
+              <div class="payCard">
+                <div>
+                  <span>添加银行卡</span>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      agreeProtocolBtn: false,
+      actionShow: false,
+      delImg:false,
+      AccountNum: '',
+      intopBankNum:'',
+      bankOutInfo:{
+        bankOutNum:'',
+        bankOutName:''
+      },
+      addBankInfos:[],
+      isAgreementShow: false,
+      WeixinId:'',
+      Branch: ''
+      // IdCard:''
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+    },
+    mounted () {
+      this.isLoading = weui.loading('加载中');
+      this.getWeixinUser()
+    },
+    methods: {
+      // 获取用户信息
+      getWeixinUser () {
+        var  that = this;
+        var  getParam = getParams();
+        if (sessionStorage.getItem('wxZY')) {
+          var  wxZY = JSON.parse(sessionStorage.getItem('wxZY'))
+          // console.log(wxZY)
+          // if (wxZY.InvalidFlag == 1) { // 判断是否失效
+          //   alert('页面已失效，请重新打开');
+          //   return;
+          // }
+          // if (wxZY.Subscribe + '' == '0') { // 未关注，返回跳转到关注引导页面
+          //   var url = location.protocol + "//" + location.host + "/pweixin/weixin/app.html?m=QrCodeGuideAttention";
+          //   window.location.href = url;
+          //   return;
+          // };
+          that.WeixinId = wxZY.OpenId
+          that.myCard()
+        } else {
+          if (getParam) {
+            var  formData = {
+              Code: getParam.code,
+              PageFlag: "OpenCardOnline"
+            };
+          }
+          ajaxPost(zyHost+"/pweixin/QueryWeixinUser.do", formData, function (data1) {
+            data = JSON.parse(data1);
+            that.WeixinId = data.OpenId
+            that.myCard()
+            // if (window.sa) window.sa.login(data.OpenId);
+            if (!sessionStorage.getItem('wxZY')) {
+              console.log('---无缓存---');
+              sessionStorage.setItem('wxZY', JSON.stringify(data));
+            }
+          });
+        }
+      },
+      // 获取卡的后四位
+      getCardLast (value) {
+        var val = value.replace(/\s/g, '')
+        var val1 = val.substring(val.length-4)
+        return val1
+      },
+      // 绑定卡查询
+      myCard () {
+        var  that = this
+        var  parmars = {  
+          "WeixinId": this.WeixinId
+        }
+        // console.log('卡列表上送数据---->', JSON.stringify(parmars, null, 2))
+        var  url = zyHost+'/pweixin/MyAccountInfoQry.do'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          // console.log('卡列表---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.isLoading.hide()
+            that.intopBankNum  = data.AcctNo // 电子账户
+            that.Branch = data.Branch // 机构号
+            // that.IdCard = comFornatIdCard(data.IdNo) 后续绑卡返显身份证
+            var  arr = []
+            data.List.forEach(function (item,index){
+              var  arrObj = {}
+              arrObj['cardNum'] = item.ValidAcctNo // 获取绑定卡
+              arrObj['cardName'] = item.ValidBankName // 银行卡名字
+              arrObj['logo'] = item.ValidBankCode
+               // 背景图名字根据code来
+              if (bankCodeToBankBg (item.ValidBankCode)) {
+                arrObj['logo'] = 'CardResource/img/s'+item.ValidBankCode+'.png'
+              } else {
+                arrObj['logo'] = 'CardResource/img/qt.png'
+              }
+              arr.push(arrObj)
+            })
+            // 默认选中第一个
+            that.bankOutInfo.bankOutNum = arr[0].cardNum
+            that.bankOutInfo.bankOutName = arr[0].cardName
+            that.addBankInfos = arr
+          } else {
+            that.isLoading.hide()
+            if (typeof data === "string") {
+              var data = JSON.parse(data)
+              alert(data._RejMsg)
+            } else {
+              alert(data._RejMsg)
+            }
+          }
+        }, function (erro) {
+        })
+      },
+      // 增加校验
+      inputCheck () {
+        var  partrnCard = /^[0-9]{13,25}$/;
+        var  bankNum = this.intopBankNum.replace(/\s/g, '')
+        if (this.intopBankNum === '') {
+          alert('收款卡号不能为空哦')
+          return false
+        }
+        // 限制银行卡号长度（13-25）位
+        if (!partrnCard.exec(bankNum)) {
+          alert("请输入正确的卡号");
+          return false;
+        }
+        if (this.AccountNum === '' || this.AccountNum === '0.00') {
+          alert('金额不能为空哦')
+          return false
+        }
+      },
+      toPage (to,from) {
+        if (this.inputCheck() === false) {
+          return false
+        }
+        this.isLoading = weui.loading('加载中');
+        var intoCardNum = this.getCardLast(this.intopBankNum)
+        var outCardNum = this.getCardLast(this.bankOutInfo.bankOutNum)
+        var  IntoRes = {
+          'outCardNum': outCardNum,
+          'outCardName': this.bankOutInfo.bankOutName,
+          "intoCardNum": intoCardNum,
+          "accountNum": this.AccountNum
+        }
+        sessionStorage.setItem('IntoRes', JSON.stringify(IntoRes));
+        if (from) {
+          this.intoTrans (to,from)
+        }
+      },
+      // 转入交易
+      intoTrans (to,from) {
+        var  that = this
+        var  bankNum = this.bankOutInfo.bankOutNum.replace(/\s/g, '')
+        var  AccountNum = (this.AccountNum.replace(/,/g, ''))
+        var  parmars = {
+          "WeixinId":this.WeixinId,
+          "PayAccOth": this.bankOutInfo.bankOutNum,
+          "InAmount": AccountNum,
+          "PayAccElecDeptId": this.Branch
+        }
+        // console.log('转入上送字段---->', JSON.stringify(parmars, null, 2))
+        // window.location.href = 'OcrCheck' + '.html'
+        var  url = zyHost+'/pweixin/MyAccoutCapitalIn.do'
+        // var  url = './VocationCodeListQry.json'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          // console.log('转入成功---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            // 初始化职业显示
+            that.isLoading.hide();
+            window.location.href = to + '.html?fromPage=' +from 
+          } else {
+            // var  data1 = JSON.parse(data)
+            that.isLoading.hide();
+            if (typeof data === "string") {
+              var data = JSON.parse(data)
+              alert(data._RejMsg)
+            } else {
+              alert(data._RejMsg);
+            }
+          }
+        }, function (erro) {
+        })
+      },
+      keyUpBankNum () {
+        this.intopBankNum = comFormatBankNum(this.intopBankNum)
+      },
+      // 失去焦点时触发
+      accountBlur () {
+        this.AccountNum = comFormatMoney(this.AccountNum)
+      },
+      accountKeyUp () {
+        this.delImg = true
+      },
+      delImgClick () {
+        this.AccountNum = ''
+      },
+      // 下拉弹层,增加动画效果
+      action () {
+        this.actionShow = true
+      },
+      closeSheet () {
+        this.actionShow = false
+      },
+      // 点击弹层，关闭
+      bankListBtn () {
+        this.actionShow = false
+      },
+      // 没有卡的时候展示？
+      seclectBank (item,index) {
+        this.bankOutInfo.cardBalance = item.cardBalance
+        this.bankOutInfo.bankOutNum = item.cardNum
+        this.bankOutInfo.bankOutName = item.cardName
+        this.actionShow = false
+      }
+      // 添加银行卡
+      // addBankCard () {
+      //   // 保存脱敏后的身份证
+      //   sessionStorage.setItem('IdCard', (this.IdCard));
+      //   window.location.href = 'BankCardComplete.html'
+      // }
+    }
+  })
+  </script>
+</html>

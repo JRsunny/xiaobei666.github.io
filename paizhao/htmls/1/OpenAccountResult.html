@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+       [v-cloak] {
+        display: none;
+      }
+      .OpenAccountResult {
+        margin: 0 auto;
+      }
+      .result {
+        width: 100%;
+        height: 6.67rem;
+        background:#ADADAD;
+      }
+      .resultDiaLog {
+        position: absolute;
+        left:50%;
+        top:1.5rem;
+        border:1px solid #E6E6E6;
+        background:#fff;
+        border-radius: 10px;
+        transform: translate(-50%,0);
+        width: 3.2rem;
+        height: 2.64rem;
+      }
+      .resultDiaLog  .Opentips{
+        text-align: center;
+        color:#333333;
+      }
+      .Opentips img {
+        margin-top:0.24rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+      .OpenSuc {
+        font-size:0.16rem;
+      }
+      .Opentips .OpenTran {
+        margin-top:0.1rem;
+        font-size:0.12rem;
+      }
+      .resultDiaLog .Openbtn {
+        display: flex;
+        justify-content: center;
+        margin-top:0.24rem;
+        height: 0.4rem;
+        line-height: 0.4rem;
+        border-top:1px solid #E6E6E6;
+      }
+      .Openbtn p{
+        width: 1.6rem;
+        font-size:0.16rem;
+        text-align: center;
+      }
+      .Openbtn p:first-child{
+        color:#999999;
+        border-right:1px solid #E6E6E6;
+      }
+      .Openbtn p:last-child{
+        color:#00bfff;
+      }
+    </style>f
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="OpenAccountResult">
+        <div class="common-header">开户成功</div>
+        <!-- 弹层 -->
+        <div class="result">
+          <div class="resultDiaLog">
+            <div class="Opentips">
+              <img :src="imgBaseUrl+'CardResource/img/accountResult.png'">
+              <div class="OpenSuc">开户成功</div>
+              <div class="OpenTran">转入资金激活账户吧!</div>
+            </div>
+            <div class="Openbtn">
+              <p @click="toPageSuc">以后再说</p>
+              <p @click="toPage()">立即转入</p>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js//weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      // isDialog: true
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+    },
+    mounted () {
+    },
+    methods: {
+      jsSDKInit () {
+        var  that = this;
+        var jsData = {
+          Url: location.href.split('#')[0]
+        };
+        ajaxPost(zyHost+'/pweixin/JsApiQry.do', jsData, function (resp) {
+          resp = JSON.parse(resp);
+          // var url = https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx40fd94cce984eca0&redirect_uri=https%3A%2F%2Fwbs.zyebank.net%2Fpweixin%2Fweixin%2Findex.html%3Fpage%3Duz0TG5NcEjUM5dh%2BCrCOUpM4iVeMM42xShmZ3Gi6TfaLuZFFqnGQxqEcEs9%2B6VBy&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + resp.appId + "&redirect_uri=";
+          url += window.encodeURIComponent(location.protocol+"//"+location.host+ "/pweixin/weixin/index.html?page=uz0TG5NcEjUM5dh+CrCOUpM4iVeMM42xShmZ3Gi6TfaLuZFFqnGQxqEcEs9+6VBy");
+          url += "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+          // console.log("全部:"+url)
+          window.location.href = url;
+        })
+      },
+      jsSDKInit1 () {
+        var  that = this;
+        this.isLoading = weui.loading('加载中');
+        var jsData = {
+          Url: location.href.split('#')[0]
+        };
+        ajaxPost(zyHost+'/pweixin/JsApiQry.do', jsData, function (resp) {
+          resp = JSON.parse(resp);
+          that.isLoading.hide();
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + resp.appId + "&redirect_uri=";
+          url += encodeURIComponent(location.href.split('OpenCardOnline')[0]+"OpenCardOnline/MoneyInto.html");
+          url += "&response_type=code&scope=snsapi_base&state=#wechat_redirect";
+          window.location.href = url;
+        })
+      },
+      toPage (page) {
+        this.jsSDKInit1()
+        // window.location.href = page+'.html'
+      },
+      toPageSuc () {
+        this.jsSDKInit()
+      }
+    }
+  })
+  </script>
+</html>

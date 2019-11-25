@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>绑定银行卡</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../CardResource/js/filter.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+      [v-cloak] {
+        display: none;
+      }
+      .line-status{
+        display: flex;
+        padding-top:0.14rem;
+        background: #fff;
+        justify-content: center;
+      }
+      .line-box {
+        display: flex;
+        align-items: center;
+      }
+      .point {
+        width: 0.13rem;
+        height: 0.13rem;
+        background-color: #cccccc;
+        border-radius: 50%;
+      }
+      .selectedPoint {
+        width: 0.13rem;
+        height: 0.13rem;
+        background-color: #00bfff;
+        border-radius: 50%;
+      }
+      .selectPpoint {
+        width: 0.23rem;
+        height: 0.23rem;
+        background-color: #00bfff;
+        border-radius: 50%;
+        position: absolute;
+        opacity: 0.4;
+        top:0.49rem;
+        left: 2.16rem;
+      }
+      .line {
+        height: 0.02rem;
+        width: 0.8rem;
+        background-color:#CECECE;
+      }
+      .selectLine {
+        background-color: #00bfff;
+      }
+      .msg {
+        margin-left:-0.3rem;
+        margin-top:0.1rem;
+        color:#999999;
+      }
+      .select-msg{
+        color:#333333;
+      }
+      .bankCardMsg {
+        margin-top:0.12rem;
+        padding-left:0.15rem;
+        background: #fff;
+      }
+      .bankCardCom  {
+        display: flex;
+        height: 0.44rem;
+        line-height: 0.44rem;
+        font-size: 0.14rem;
+      }
+      .bankCardNum {
+        border-bottom:1px solid #CECECE;
+      }
+      .bankCardCom p:first-child{
+        width: 0.8rem;
+      }
+      .bankCardAdds {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left:0.3rem;
+        height: 0.44rem;
+        width: 2.4rem;
+      }
+      .input {
+        margin-left:0.3rem;
+        height: 0.44rem;
+        line-height: 0.3rem;
+        outline: medium;
+        width: 2.4rem;
+      }
+      .inputNum {
+        border-bottom:1px solid #CECECE;
+      }
+      /* 协议框 */
+      .kaihu-agreeBox {
+        margin-top: 0.14rem;
+        padding-left: 0.14rem;
+        font-size: 12px;
+        color: #999;
+        align-items: center;
+      }
+      .kaihu-agreeBox img{
+        width: 0.14rem;
+        height: 0.14rem;
+        margin-right:0.05rem;
+      }
+      .protocol {
+        color: #18baf9;
+      }
+      .subBtn {
+        color:#fff;
+      }
+      .subDiv {
+        display: flex;
+        justify-content: center;
+        font-size:0.18rem;
+      }
+      .colorBtn {
+        background:#cccccc;
+        color:#999999;
+      }
+      .Agreement {
+        background:#fff;
+        line-height: 0.3rem;
+        padding-left:0.14rem;
+        padding-right:0.14rem;
+        padding-bottom:0.4rem;
+      }
+      .p-title {
+        padding-top:0.2rem;
+        text-align: center;
+        font-size:0.18rem;
+      }
+      .agreementBtn {
+        text-align: center;
+        color: #fff;
+        font-size: 18px;
+        position: fixed;
+        bottom: 0px;
+      }
+      .textEnd {
+        display: block;
+        text-align: right;
+        padding-top: 20px;
+        color: #999;
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="BankCardCheck" v-show="!isAgreementShow1 && !isAgreementShow2 && !isAgreementShow3 && !isAgreementShow4">
+        <div class="common-header">绑定银行卡</div>
+        <!-- 申请进度4种情况，3中状态-》1原点，2，蓝点3，带阴影 -->
+        <div class="line-status">
+          <div>
+            <div class="line-box">
+              <p class="point" :class="{selectedPoint: status>=1}">
+                <!--选中状态 -->
+                <span class="" v-show="status>=1" ></span>
+              </p>
+              <p class="line" :class="{selectLine: status>=1}"></p>
+            </div>
+            <div class="msg select-msg">身份信息</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point" :class="{selectedPoint: status>=2}">
+                <span class="" v-show="status>=2" ></span>
+              </p>
+              <p class="line" :class="{selectLine: status>=2}"></p>
+            </div>
+            <div class="msg">人脸识别</div>
+          </div>
+          <div>
+            <!-- <i class="point"><i> -->
+            <div class="line-box">
+              <p class="point">
+                <span class="selectPpoint" v-show="status===2"></span>
+              </p>
+              <p class="line"></p>
+            </div>
+            <div class="msg">绑银行卡</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point ">
+                <span class="select-point" v-show="status>=5"></span>
+              </p>
+            </div>
+            <div class="msg last-point">交易密码</div>
+          </div>
+        </div>
+        <!-- 银行卡信息 -->
+        <div class="bankCardMsg">
+          <div class="bankCardCom bankCardNum">
+            <p>银行卡号</p>
+            <input  class="input inputNum" placeholder="请输入银行卡号" v-model="bankNum" @keyup="keyUp" @blur="blur" oninput="if(value.length>26)value=value.slice(0,26)" type="tel"/>
+          </div>
+          <div class="bankCardCom ">
+            <p>开户行</p>
+            <p class="bankCardAdds">{{bankAdds}}</p>
+            <!-- <input  class="input" placeholder="请输入你的开户行" v-model="bankAdds"/> -->
+          </div>
+        </div>
+        <!-- 协议 -->
+        <div class="kaihu-agreeBox">
+          <!-- <input type="checkbox" class="cldAcct-agreeBtn" v-model="agreeProtocolBtn" @click="skipSubmit()" /> -->
+          <div class="weui-flex">
+              <img :src="imgBaseUrl+'CardResource/img/agree.png'" v-show="!agreeProtocolBtn" @click="skipSubmit()" >
+              <img :src="imgBaseUrl+'CardResource/img/agree2.png'" v-show="agreeProtocolBtn" @click="skipSubmit()" >
+              <div class="weui-cell__bd">
+                <p>我已认真阅读并同意
+                  <!-- <p></p>> -->
+                  <a @click="toAgreement('1')" class="protocol">《个人税收居民声明文件》</a>
+                  <a @click="toAgreement('2')" class="protocol">《中原银行电子账户协议》</a>
+                  <a @click="toAgreement('3')" class="protocol">《中原银行银联代扣签约协议书》</a>
+                </p>
+              </div>
+          </div>
+          
+          <div class="weui-flex">
+            <img :src="imgBaseUrl+'CardResource/img/agree.png'" v-show="!agreeProtocolBtn1" @click="skipSubmit1()">
+            <img :src="imgBaseUrl+'CardResource/img/agree2.png'" v-show="agreeProtocolBtn1" @click="skipSubmit1()">
+            <div class="weui-cell__bd">
+              <p>我已认真阅读并同意
+                <a @click="toAgreement('4')" class="protocol">《中原银行借记卡在线申请须知》</a>
+              </p>
+            </div>
+          </div>
+          </div>
+        <div class="subDiv">
+          <button class="common-btn subBtn" v-bind:disabled="!agreeProtocolBtn" :class="{colorBtn: !agreeProtocolBtn}" @click="toPage('InfoCheck')">下一步</button>
+        </div>   
+      </div>
+      <!-- 个人税收协议页面 -->
+      <div class="Agreement" v-if="isAgreementShow1">
+          <div class="p-title font-18">
+              <strong >个人税收居民身份声明文件</strong>
+          </div>
+          <!-- 内容 -->
+          <div>
+            <p>姓名:<u>{{personInfo.CusName}}</u></p>
+            <p>本人声明: 
+              <span style="position: absolute;">&radic;</span>
+              <span>□ 1.仅为中国税收居民 □ 2.仅为非居民</span>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  □ 3.既是中国税收居民又是其他国家（地区）税收居民
+              </p>
+            </p>
+            <p>
+              如在以上选项中勾选第2项或者第3项，请填写下列信息：
+            </p>
+            <p>
+                姓(英文或拼音):_________名(英文或拼音):_________              
+            </p>
+            <p>
+              出生日期:____________
+            </p>
+            <p>
+                现居地址(中文):_______(国家)_______(省)________(市)(境外地址可不填此项)</br>
+                <p style="margin-left: 0.52rem;">(英文或拼音):______(国家)_____(省)_____(市)</p> 
+            </p>
+            <p>税收居民国（地区）及纳税人识别号：</p>
+            <p>
+              1.______________________________</br>
+              2.______________________________
+            </p>
+            <p>如不能提供居民国（地区）纳税人识别号，请选择原因：</p>
+            <p>居民国（地区）不发放纳税人识别号</p>
+            <p>账户持有人未能取得纳税人识别号，如选此项，请解释具体原因：</p>
+            <p>____________________________________________</p>
+            <p>&nbsp;&nbsp;&nbsp;&nbsp;本人确认上述信息的真实、准确和完整，且当这些信息发生变更时，将在30日内通知贵机构，否则本人承担由此造成的不利后果。</p>
+            <p>
+              <span>签名：</span>
+              <span style="margin-left: 0.98rem;">日期：</span>
+            </p>
+            <p>签名人身份：□ 本人    □ 代理人  </p>
+            <strong>说明：</strong></br>
+            <p>
+                1. 本表所称中国税收居民是指在中国境内有住所，或者无住所而在境内居住满一年的个人。在中国境内有住所是指因户籍、家庭、经济利益关系而在中国境内习惯性居住。在境内居住满一年，是指在一个纳税年度中在中国境内居住365日。临时离境的，不扣减日数。临时离境，是指在一个纳税年度中一次不超过30日或者多次累计不超过90日的离境。
+            </p>
+            <p>
+                2. 本表所称非居民是指中国税收居民以外的个人。其他国家（地区）税收居民身份认定规则及纳税人识别号相关信息请参见国家税务总局网站（http://www.chinatax.gov.cn/aeoi_index.html）。
+            </p>
+            <p>
+                3. 军人、武装警察无需填写此声明文件。
+            </p>
+          </div>
+          <div class=" common-btn agreementBtn" @click="toAgreement('1')">返回</div>
+      </div> 
+      <!-- 中原银行电子账户协议页面 -->
+      <div class="Agreement" v-if="isAgreementShow2">
+          <!-- <div class="common-header">中原银行个人电子账户服务协议</div> -->
+          <!-- 标题和头部 -->
+          <div>
+            <div class="p-title font-18">
+                <strong >中原银行个人电子账户服务协议</strong>
+            </div>
+            <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;甲方：<u>{{personInfo.CusName}}</u>
+            </div>
+            <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;乙方：中原银行股份有限公司（以下简称“中原银行”）
+            </div>
+            <div>
+                &nbsp;&nbsp;&nbsp;&nbsp;甲方自愿申请使用乙方提供的电子账户服务，为明确双方的权利和义务，经甲乙双方平等协商一致，特签订本服务协议。
+            </div>
+          </div>
+          <!-- 内容部分 -->
+          <div>
+            <!-- 第一条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第一条定义</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;下列用语在本协议中的含义为：</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;1、电子账户：是指甲方在乙方申请开立的II类或III类个人人民币银行结算账户。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;2、电子账户服务：指依托乙方的结算网络、支付渠道和信用优势，乙方为甲方提供的存款、理财、基金等金融产品的购买服务，限定金额的消费及缴费支付等结算服务，贷款及融资服务。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;3、密码：指乙方用以识别甲方身份与账户指令、需要甲方提供的代码，包括登录密码、电子账户交易密码、短信验证码、动态口令、U-key密码等多个种类，具体业务使用的密码种类以乙方要求为准。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;4、绑定账户：是由甲方申请开立电子账户时自行设定的，为甲方本人实名开立、实际控制、合法持有的Ⅰ类户或信用卡账户。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;5、电子账户资金转入：指甲方通过绑定账户及其他合法有效的银行结算账户以转账等形式将资金划转至电子账户。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;6、电子账户资金转出：指将电子账户可用余额划转至绑定账户或者其他结算账户。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;7、账户指令：是指甲方向乙方发出的，用于实现电子账户注册、电子账户充值、电子账户提现、理财购买、消费及缴费支付等功能或用于甲方电子账户信息修改（包括但不限于修改密码、绑定手机号码、绑定账户等）的电子指令。</p>
+            </div>
+            <!-- 第二条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第二条申请与开立</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;1、甲方通过乙方手机银行、中原直销银行、营业网点等乙方指定的渠道留存身份信息、绑定手机号码、绑定账户、设置电子账户密码等，经乙方审核通过后，甲方即可完成电子账户申请。
+                <strong>乙方有权依据乙方相关制度要求的开户条件自主决定是否同意开户，具体以甲方申请时乙方的相关制度要求为准。</strong>
+              </p>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;2、甲方自愿申请开立电子账户，并承诺申请电子账户时具有完全民事行为能力，甲方开立、使用或撤销电子账户时同意遵守国家有关金融法律法规、政策及中原银行的有关业务规章制度，开户时留存的开户资料正确、真实、合法、有效，电子账户必须由甲方本人办理，不得由他人代办。如甲方提供的资料不符合要求或存在代办、冒充他人申请等情形，乙方有权拒绝其申请，由此所产生的全部损失由甲方自行承担。</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;3、甲方申请开立电子账户时所设定的绑定账户、绑定手机号码，必须是甲方本人合法所有且真实有效的，否则乙方有权拒绝甲方申请。如因甲方绑定账户、绑定手机号码非其本人所有导致甲方遭受损失的，
+                <strong>由甲方自行承担。</strong>
+              </p>
+            </div>
+            <!-- 第三条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第三条使用规则</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;1、甲方通过乙方手机银行、中原直销银行、营业网点柜面等渠道进行电子账户的查询和交易，乙方识别甲方身份的依据为密码，不同业务所依据的密码类别以乙方规定为准。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;2、甲方知悉并同意:
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;（1）甲方只能通过电子账户使用乙方已开通的与电子账户相应的金融服务。其中Ⅱ类户可以办理存款、购买投资理财产品等金融产品、限额消费和缴费、限额向非绑定账户转出资金业务。Ⅲ类户可以办理限额消费和缴费、限额向非绑定账户转出资金业务。经乙方柜面、自助设备加以工作人员现场面对面确认身份后，Ⅱ类户增加办理存取现金、非绑定账户资金转入业务，可以配发银行卡实体卡片；Ⅲ类户还可以办理非绑定账户资金转入业务。
+                </p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;（2）甲方在乙方渠道开立电子账户交易限额为：
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ⅱ类户由非绑定账户转入资金、存入现金日累计限额合计为1万元，年累计限额合计为20万元；消费和缴费、向非绑定账户转出资金、取出现金日累计限额合计为1万元，年累计限额合计为20万元。</p>
+                    <p>&nbsp;&nbsp;&nbsp;&nbsp;Ⅲ类户账户余额不得超过1000元；由非绑定账户转入资金日累计限额为5000元，年累计限额为10万元；消费和缴费支付、向非绑定账户转出资金日累计限额合计为5000元，年累计限额合计为10万元。</p>
+                    <strong>&nbsp;&nbsp;&nbsp;&nbsp;乙方有权根据业务需要和有关法律法规及监管政策的规定对限额进行调整。</strong>
+                  </p>
+              </p>
+              <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;  3、乙方通过手机银行、中原直销银行、营业网点柜面等渠道为甲方提供电子账户服务，甲方应按乙方的规定进行操作，因甲方操作不当造成的损失，乙方不承担任何责任。
+              </p>
+              <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;  4、甲方保证将电子账户用于合法用途，所从事的各种交易为法律所允许，不得利用该账户进行或协助他人进行洗钱、恐怖融资或其他非法活动。
+                  <strong>
+                      如发现甲方违法或违规使用该账户，或乙方有合理理由怀疑涉及洗钱、恐怖融资或其他非法活动的交易，乙方有权暂缓处理、拒绝处理、撤销已处理的交易或停止甲方继续使用该账户，由此产生的全部损失由甲方自行承担，且甲方应积极配合乙方的相关调查。
+                  </strong>
+              </p>
+              <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp; 5、个人银行账户的开立和使用应当遵守法律、行政法规，如甲方被设区的市级及以上公安机关认定为出租、出借、出售、购买银行账户，或假冒他人身份或者虚构代理关系开立银行账户或者支付账户，乙方有权在5年内暂停甲方银行账户非柜面业务、支付账户所有业务，且有权在3年内暂停甲方新开立账户业务。
+              </p>
+              <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp; 6、甲方通过电子账户在乙方办理各项业务，应按照有关金融法律法规、政策和乙方业务规定交纳手续费、汇费等相关业务费用，甲方不可撤销地授权乙方直接从甲方在乙方及乙方任一分支机构开立的任一账户中自行扣收。甲方申请开通、维护和使用账户的服务费用按乙方公布及调整的费率标准执行。
+              </p>
+              <strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp;7、乙方有权对甲方电子账户交易活动进行监测，对开户之日起6个月内无交易记录的电子账户，乙方有权暂停其非柜面业务，甲方申请恢复非柜面业务的，乙方将重新核实甲方身份，核实通过后方可恢复非柜面业务。对1年(含)以上没有发生除结息以外的动账类交易的电子账户，乙方有权将其转为不动户，转为不动户后，甲方无法使用电子账户通过网银、手机银行、支付宝、ATM等非柜面渠道办理借记业务，电子账户发生任一笔来账业务后，乙方自动恢复其相应服务。
+              </strong>
+            </div>
+            <!-- 第四条 -->
+            <div>
+              <strong> &nbsp;&nbsp;&nbsp;&nbsp;第四条凭证和签章</strong></br>
+              <strong> &nbsp;&nbsp;&nbsp;&nbsp;1、甲方知悉并同意，乙方系统内存储的与所提供产品及服务相关的电子数据是甲方使用电子账户的有效凭证。</strong></br>
+              <strong> &nbsp;&nbsp;&nbsp;&nbsp;2、甲方知悉并同意，甲方在电子账户下使用密码的行为，即视同中国法律法规及规章规定的甲方签章行为，且构成甲方可靠的电子签名，均表明了甲方认可其中的交易内容。</strong>
+              <p> &nbsp;&nbsp;&nbsp;&nbsp;3、甲方发起账户指令的电子数据（包括但不限于通过乙方电子渠道传递的指令），将视为该交易的有效凭证，该账户指令由于违反法律法规规定、本协议约定或者由于甲方原因导致无法执行的除外。</p>
+            </div>
+            <!-- 第五条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第五条账户指令与记录</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;1、电子账户的数据电文（包括但不限于甲方通过电子渠道传递的账户指令、电子账户交易信息等），为双方认同的书面证据，可视为相关交易的有效凭证，但双方另有约定的情况除外。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;2、电子账户不寄送纸质对账单，甲方可通过乙方手机银行、中原直销银行或营业网点等渠道查询、核对交易记录。如甲方对交易记录有异议，可前往营业网点咨询或致电乙方客户服务电话95186。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;3、甲方账户指令一经发出，除乙方书面同意外，不得要求撤销。</p>
+            </div>
+            <!-- 第六条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第六条电子账户安全</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;1、甲方所使用的安全要素包括但不限于各类密码、短信验证码、动态口令、U-key密码等。安全要素是乙方确认甲方身份的唯一依据，
+                <strong>
+                    凡通过安全要素验证、确认后发送的账户指令，视同甲方本人操作行为，甲方应承担由此产生的一切后果。
+                </strong>
+              </p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;2、甲方有义务采取风险防范措施，安全使用电子账户，该等义务包括但不限于：
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;  （1）妥善保管与办理电子账户相关的各项敏感信息，如身份证件、绑定账户、注册时提供的手机号码、接受验证码的手机等，不得交给他人保管，不要在不信任的网站或其他场所透露卡号、身份证件号码、手机号码、常用电话号码等个人信息，防止被他人使用
+                    <strong>
+                        因上述任何信息或资料丢失、被盗抢、毁损、泄露等造成的后果和责任由甲方自行承担。
+                    </strong>
+                </p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;（2）甲方应避免使用姓名、生日、电话号码等与本人明显相关的信息作为密码，并应妥善保存密码，不应告知包括银行人员在内的任何人；
+                    <strong>
+                        不应在计算机、电话、手机或其他电子设备上记录或保留，因密码泄露造成的后果由甲方自行承担。
+                    </strong>
+                </p>
+                <p>
+                    &nbsp;&nbsp;&nbsp;&nbsp;（3）采取有效的措施（如安装防病毒软件和网络防火墙）保护用于办理账户的计算机、手机等电子设备的安全，防止其发生信息泄露或被他人操控。
+                    <strong>
+                        因信息泄露或被他人操控造成的后果由甲方自行承担。
+                    </strong>
+                </p>
+                <p>
+                    
+                    <strong>
+                        &nbsp;&nbsp;&nbsp;&nbsp;  （4）电子账户仅限本人使用，不得转借、转让、出租或以其他方式供他人使用，否则由此所产生的风险及全部损失由甲方自行承担。
+                    </strong>
+                </p>
+              </p>
+              <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;  3、经乙方审核认为甲方违反中国法律、监管规定、乙方相关规定或本协议约定的，乙方保留对甲方电子账户进行即时关闭处理的权利，由此所产生的全部损失由甲方自行承担。
+              </p>
+              <p>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  4、在发生以下情形时，乙方有权对甲方电子账户采取限制措施，包括但不限于止付、止收、修改账户状态、解除绑定账户直至强制销户，相关责任由甲方承担：</strong></br>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）乙方有合理理由认定该电子账户可能非本人开立的；</strong></br>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）甲方否认电子账户由本人开立；</strong></br>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）绑定账户、手机号码与其他客户的电子账户有重复；</strong></br>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（4）绑定手机号码不存在、无效、不真实或为虚拟手机号码；</strong></br>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（5）绑定账户非甲方本人账户，或绑定账户不是甲方同名I类个人人民币银行结算账户或信用卡账户；</strong></br>
+                  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（6）其他乙方认为可能对电子账户安全性产生影响的情形。</strong></br>
+                </p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp; 甲方对上述情况有异议的，可通过拨打乙方客服热线95186或前往乙方营业网点等渠道提出复查要求。</p>
+            </div>
+            <!-- 第七条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第七条信息披露与保密</strong>
+              <p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;  乙方在法律允许的前提下，为业务管理需要可收集、处理、传递及应用甲方的个人资料。乙方对甲方的个人隐私和商业秘密将依法予以保密，未经甲方许可，乙方不得向任何第三人提供或许可第三人使用甲方个人信息，但依照法律、法规规定应向有权机关（包括但不限于向征信机构）披露，或经甲方同意后，乙方为完善服务向相关外包服务提供商提供的除外。
+              </p>
+            </div>
+            <!-- 第八条 -->
+            <div>
+              <strong> &nbsp;&nbsp;&nbsp;&nbsp; 第八条责任的限制与免除</strong></br>
+              <strong> &nbsp;&nbsp;&nbsp;&nbsp; 1、如遇下列情形之一，乙方有权不认可或不执行数据电文表达的账户指令，且乙方对此无需承担任何责任：</br>
+                <strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（1）电子账户余额不足或账户内资金被依法查封、冻结、止付或扣划；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（2）甲方的行为是出于欺诈或其他非法目的；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（3）甲方未按照相关规定发送账户指令；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（4）乙方收到的账户指令信息不明确、不完整、存在乱码、缺乏必要的交易信息或有其他不符合乙方规定的情形；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（5）拟交易金额大于乙方规定的限额；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（6）不可抗力、计算机黑客袭击、系统故障、供电系统故障或其他不可归因于乙方的情况。</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（7）乙方执行账户指令将违反相关的法律、法规或规章的规定；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（8）甲方违反本协议或双方已订立其他协议或合同的；</strong></br>
+                <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;（9）双方特别约定或法律法规规定的其他情况。</strong></br>
+              </strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;2、任何非甲方应得款项（例如因系统故障或诈骗交易等情况）错误存入甲方电子账户，乙方查实确认并经有权机关裁判后，乙方将依据有权机关的裁判结果配合处置该笔款项。</p>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;3、乙方仅按甲方有效账户指令提供电子账户服务，甲方与其他当事人发生交易纠纷时，应由甲方自行解决，乙方不承担任何责任。</p>
+              <strong>
+                  &nbsp;&nbsp;&nbsp;&nbsp; 4、对于甲方使用电子账户相关服务的不当行为（包括但不限于违反甲方所做承诺或约定义务、违反乙方业务规则等）或其它任何与国家法律法规相违背的、乙方认为应当终止服务的情况，乙方有权采取删除或屏蔽甲方发布的信息、限制或终止全部或部分服务、解除协议、列入黑名单等一项或多项处理措施，并保留追究其法律责任的权利。乙方在有证据证明甲方或具体交易事项存在违法违规或违反本协议等问题时，有权根据不同情况选择做出给予甲方包括但不限于警告、公示、限权、终止服务等不同程度的处罚，并保留追究其相关法律责任的权利。
+              </strong>
+            </div>
+            <!-- 第九条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第九条公告与变更</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;乙方有权对本协议及电子账户使用规则进行单方变更，具体以乙方官方网站或网银、手机银行、微信银行、中原直销银行等乙方渠道发布的公告为准。如甲方不同意变更内容，应立即停止使用电子账户，如甲方在银行公告期满后继续使用电子账户，视为甲方已完全理解并接受上述变更，相关条款自公告届满之次日起生效，甲乙双方无须另行签订协议。</p>
+            </div>
+            <!-- 第十条 -->
+            <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;第十条其他</strong>
+              <p>&nbsp;&nbsp;&nbsp;&nbsp;1、本协议可采用纸质方式或电子渠道方式签署。采用纸质方式签署确认的，本协议自甲方签署《电子账户开立凭证》之日起生效；采用电子渠道方式签署的，本协议自甲方通过乙方电子渠道勾选《中原银行个人电子账户服务协议》并提交申请之日起生效，甲方电子渠道勾选与纸质合同手写签名具有同等法律效力。本协议生效不视为乙方确保为甲方开立电子账户。本协议的任何条款如因任何原因而被确认无效，都不影响本协议其他条款的效力。</p>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;2、本协议适用中华人民共和国法律、行政法规和中国人民银行以及中国银行业监督管理委员会的规章与制度和有关国内行业惯例。在本协议项下发生的相关争议，双方应友好协商解决，协商不成的，应向乙方住所地有管辖权的人民法院提起诉讼。</strong></br>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;乙方已采取合理方式提请甲方注意本合同项下免除或限制乙方责任的条款，并对有关条款予以充分说明；甲乙双方对本合同所有条款内容的理解不存在异议。</strong>
+            </div>
+          </div>
+          <div class="common-btn agreementBtn" @click="toAgreement('2')">返回</div>
+      </div> 
+       <!-- 中原银行银联代扣协议：只第一次显示。协议名字和卡号待修改 ？-->
+      <div class="Agreement" v-if="isAgreementShow3">
+        <!-- <div class="common-header">中原银行个人电子账户服务协议</div> -->
+        <!-- 标题和头部 -->
+        <div>
+          <div class="p-title font-18">
+              <strong >中原银行银联代扣签约协议书</strong>
+          </div>
+          <div>
+              &nbsp;&nbsp;&nbsp;&nbsp;甲方：<u>{{personInfo.CusName}}</u>
+          </div>
+          <div>
+              &nbsp;&nbsp;&nbsp;&nbsp;乙方：中原银行股份有限公司（以下简称“中原银行”）
+          </div>
+          <div>
+              &nbsp;&nbsp;&nbsp;&nbsp;甲乙双方本着自愿、平等、互利的原则，达成以下银联代扣协议，双方承诺共同遵守：
+          </div>
+        </div>
+        <!-- 内容部分 -->
+        <div>
+          <!-- 第一条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;一、甲方授权乙方在接收到甲方收款请求后，从甲方授权机构指定的银行结算账户向收款账户划转相应资金，单笔金额上限和日累计金额上限以甲方授权机构规定为准。</strong>
+            
+          </div>
+          <!-- 第二条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;二、甲方应保证本协议中所填信息的真实、有效、完整。因本协议中甲方登记信息有误造成的一切责任和损失由甲方承担。</strong>
+            
+          </div>
+          <!-- 第三条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;三、甲方应在付款账户中保留足够余额，保证乙方能够按照协议及时收款。</strong>
+            
+          </div>
+          <!-- 第四条 -->
+          <div>
+            <strong> &nbsp;&nbsp;&nbsp;&nbsp;四、甲方有权向乙方提出对本协议进行修改。甲方修改本协议时，需先终止原授权支付协议，再签署新银联代扣协议。</strong></br>
+            
+          </div>
+          <!-- 第五条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;五、甲方有权解除本协议。甲方发起撤销协议指令，经乙方确认后本协议方可解除。</strong>
+            
+          </div>
+          <!-- 第六条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;六、乙方收到甲方收款请求后，应根据协议内容进行检查，检查通过后准确收款。</strong>
+
+          </div>
+          <!-- 第七条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;七、乙方未按照协议内容进行收款并造成甲方损失的，乙方应承担相应责任。但因以下原因造成收款请求未能完成，所造成的经济损失及其相关责任全部由甲方承担：</strong>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;  1.甲方授权机构账户可用余额不足；</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;  2.收款金额高于甲方授权机构规定的限额；</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;  3.由乙方原因造成的账户状态不正常，如账户挂失、冻结、止付等账户异常；</br>
+                &nbsp;&nbsp;&nbsp;&nbsp;  4.有权机关对账户执行冻结等措施。</br>
+            </p>
+          </div>
+          <!-- 第八条 -->
+          <div>
+            <strong> &nbsp;&nbsp;&nbsp;&nbsp; 八、乙方按照甲方授权收款后，甲方对收款金额、收款次数不符等因甲方授权机构或付款单位造成的问题提出异议的，甲方应向授权机构或付款单位进行查询。</strong></br>
+           
+          </div>
+          <!-- 第九条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;九、因不可抗力、意外事件、不可预见的系统故障以及不可归责于乙方的其他原因导致无法及时收款并造成甲方损失的，乙方不承担责任，但乙方保证尽快采取其他方式使交易正常运行。</strong>
+        
+          </div>
+          <!-- 第十条 -->
+          <div>
+            <strong>&nbsp;&nbsp;&nbsp;&nbsp;十、本协议如与国家新颁布的法律、法规、条例等相抵触，以国家新颁布的法律、法规、条例为准。</strong>
+            
+          </div>
+          <!-- 第十一条 -->
+          <div>
+              <strong>&nbsp;&nbsp;&nbsp;&nbsp;十一、本协议自甲方点击“同意签约”后生效，至甲方注销服务时终止。</strong>
+              
+          </div>
+        </div>
+        <div class="common-btn agreementBtn" @click="toAgreement('3')">返回</div>
+      </div>
+      <!-- 中原银行电子协议 -->
+      <div class="Agreement" v-if="isAgreementShow4">
+        <div class="textContent">
+          <div class="p-title font-18">
+            <strong>中原银行借记卡在线申请须知</strong>
+          </div>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;中原银行借记卡（以下简称借记卡）在线申请是指申领人通过中原银行线上渠道在线申请办理借记卡的行为。在线申请借记卡成功后，申领人需携带本人身份证原件至中原银行实体网点进行身份验证后领取卡片并办理卡片激活。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;一、在线申请借记卡须由申领人本人申请，申领人应如实填写个人身份信息、联系方式等资料且须对所填全部信息的真实性、准确性、完整性和有效性负责。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;二、为充分发挥在线申请借记卡的服务效能，同一申领人在中原银行仅能在线申请开立一张同功能的借记卡。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;三、根据法律法规或中原银行业务规则要求，申领人在领取卡片时，可能需要补充填写个人相关信息。申领人可通过以下三种途径查询中原银行网点地址：1.中原银行官方网站（http://www.zybank.com.cn）；2.中原银行微信公众号；3.中原银行客服电话95186。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;四、申领人知晓，在线申请的借记卡在未办理激活前不人在中原银行仅能在线申请开立一张同功能的借记卡。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;五、借记卡在线申请有效期为30天，即自申领人在线申请借记卡成功后30天内，申领人需至中原银行网点领取卡片并办理激活。如逾期未激活，申请信息将自动失效。申领人如有需求，须重新进行在线申请。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;六、如申领人在线申请借记卡时填写的身份信息、联系方式或其他信息等不真实、不准确、不完整或无效，则将导致身份验证失败、卡片无法领取、卡片激活失败或该借记卡后续无法正常使用等问题，对此，申领人应自担相关责任。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;七、在线申请的借记卡在激活后，使用规则应遵照《中原银行借记卡章程》。如申请开通中原银行手机银行，使用规则应遵照
+            <span>《中原银行电子银行个人客户服务协议》</span>和
+            <span>《个人税收居民身份声明文件》</span>。申领人应仔细阅读上述文件。申领人在线申请开通借记卡和中原银行手机银行将视为申领人已经充分阅读、理解并同意上述文件的全部条款和内容，申领人自愿接受上述文件规则及中原银行相关业务规则的约束。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;八、中原银行将对申领人个人账户信息严格保密。申领人已明确知晓其在本申请须知中的授权或同意所带来的上述可能后果。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;九、申领人领卡激活后应妥善保管借记卡账号及密码，并认可中原银行按照约定的方式验证相应资料相符后所形成的交易结果。</p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;十、如果申领人在线申请借记卡过程中有任何疑问，可拨打中原银行客服电话95186进行咨询。</p>
+          <div class="textEnd">中原银行股份有限公司</div>
+        </div>
+        <div class="common-btn agreementBtn" @click="toAgreement('4')">返回</div>
+      </div>
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      status: 2,
+      agreeProtocolBtn: false,
+      agreeProtocolBtn1: false,
+      bankNum:'',
+      bankAdds:'银行卡开户行地址',
+      bankId:'',
+      isAgreementShow1: false,
+      isAgreementShow2: false,
+      isAgreementShow3: false,
+      isAgreementShow4: false,
+      personInfo:{
+        CusName: '客户'
+      }
+      // isDisable:
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+    },
+    mounted () {
+      var  ua = window.navigator.userAgent.toLowerCase();
+      if(ua.match(/MicroMessenger/i)=='micromessenger'){
+        // this.jsSDKInit();
+      };
+      if (sessionStorage.getItem('personInfo')) {
+        this.personInfo = JSON.parse(sessionStorage.getItem('personInfo'))
+      }
+    },
+    methods: {
+      jsSDKInit () {
+        var  that = this;
+        this.isLoading = weui.loading('加载中');
+        var jsData = {
+          Url: location.href.split('#')[0]
+        };
+        ajaxPost(zyHost+'/pweixin/JsApiQry.do', jsData, function (resp) {
+          resp = JSON.parse(resp);
+          that.isLoading.hide();
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + resp.appId + "&redirect_uri=";
+          url += encodeURIComponent(location.href.split('OpenCardOnline')[0]+"OpenCardOnline/SetKeyBorad.html");
+          url += "&response_type=code&scope=snsapi_base&state=#wechat_redirect";
+          window.location.href = url;
+        })
+      },
+      keyUp () {
+        this.bankNum = comFormatBankNum(this.bankNum)
+      },
+      // 开户地址返现
+      blur () {
+        var  that = this
+        var  parmars = {
+          "CardBin": that.bankNum.replace(/\s/g, '')
+        }
+        var  partrnCard = /^[0-9]{13,25}$/;
+        var  bankNum = this.bankNum.replace(/\s/g, '')
+        if (this.bankNum === '') {
+          return false
+        }
+        // 限制银行卡号长度（13-25）位
+        if (!partrnCard.exec(bankNum)) {
+          return false;
+        }
+        var  url = zyHost+'/pweixin/BankIdQry.do'
+        ajaxPost(url, parmars, function (data) {
+          // console.log('开户行地址---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.bankAdds = data.BankName
+            that.bankId = data.BankId
+          } else {
+            alert(data._RejMsg)
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      },
+      inputCheck (parmars) {
+        var  partrnCard = /^[0-9]{13,25}$/;
+        var  bankNum = this.bankNum.replace(/\s/g, '')
+        if (this.bankNum === '') {
+          alert('银行卡号不能为空哦')
+          return false
+        }
+        // 限制银行卡号长度（13-25）位
+        if (!partrnCard.exec(bankNum)) {
+          alert("请输入正确的账号");
+          return false;
+        }
+        if (this.bankAdds === '') {
+          alert('开户行不能为空哦')
+          return false
+        }
+      },
+      toPage (page) {
+        if (this.inputCheck() === false) {
+          return false
+        }
+        this.subInfo(page)
+      },
+      // 提交信息
+      subInfo (page) {
+        this.isLoading = weui.loading('加载中');
+        var  that = this
+        var  ApplyId = sessionStorage.getItem('ApplyId')
+        var  parmars = {
+          "AccountNo": that.bankNum.replace(/\s/g, ''), 
+          "BankName": that.bankAdds,
+          "BankId":that.bankId,
+          "ApplyId": ApplyId 
+        }
+        // 绑卡接口
+        // console.log('绑卡成功上送---->', JSON.stringify(parmars, null, 2))
+        var  url = zyHost+'/pweixin/OpenCardApplyBindCard.do'
+        ajaxPost(url, parmars, function (data) {
+          // IsHumanReview是否人工审核IsHumanReview是否人工审核 1是 0否，
+          // console.log('绑卡成功返回结果---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.isLoading.hide();
+            if (data.IsHumanReview === '1') {
+              window.location.href = page +'.html'
+            } else if (data.IsHumanReview === '0'){
+              // 跳转长链接
+              that.jsSDKInit()
+              // window.location.href = 'SetKeyBorad.html'
+            }
+          } else {
+            that.isLoading.hide();
+            if (typeof data === "string") {
+              var data = JSON.parse(data)
+              alert(data._RejMsg)
+            } else {
+              alert(data._RejMsg)
+            }
+          }
+        }, function (erro) {
+        })
+      },
+      skipSubmit () {
+        this.agreeProtocolBtn = !this.agreeProtocolBtn
+      },
+      skipSubmit1 () {
+        this.agreeProtocolBtn1 = !this.agreeProtocolBtn1
+      },
+      toAgreement (msg) {
+        if (msg === '1') {
+          this.isAgreementShow1 = !this.isAgreementShow1
+        } else if (msg === '2') {
+          this.isAgreementShow2 = !this.isAgreementShow2
+        } else if (msg === '3') {
+          this.isAgreementShow3 = !this.isAgreementShow3
+        } else if (msg === '4') {
+          this.isAgreementShow4 = !this.isAgreementShow4
+        }
+      }
+    }
+  })
+  </script>
+</html>

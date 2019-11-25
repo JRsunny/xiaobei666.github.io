@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+      [v-cloak] {
+        display: none;
+      }
+      .idCardImage {
+        background:#fff;
+      }
+      .line-status{
+        display: flex;
+        margin-top:0.14rem;
+        justify-content: center;
+      }
+      .line-box {
+        display: flex;
+        align-items: center;
+      }
+      .point {
+        width: 0.13rem;
+        height: 0.13rem;
+        background-color: #cccccc;
+        border-radius: 50%;
+      }
+      .now-point {
+        width: 0.13rem;
+        height: 0.13rem;
+        background-color: #00bfff;
+        border-radius: 50%;
+      }
+      .select-point {
+        width: 0.23rem;
+        height: 0.23rem;
+        background-color: #00bfff;
+        border-radius: 50%;
+        position: absolute;
+        opacity: 0.4;
+        top:0.49rem;
+        left: 0.3rem;
+      }
+      .line {
+        height: 0.02rem;
+        width: 0.8rem;
+        background-color:#CECECE;
+      }
+      .msg {
+        margin-left:-0.3rem;
+        margin-top:0.1rem;
+        color:#999999;
+      }
+      .select-msg{
+        color:#333333;
+      }
+      .input-file {
+        width: 2.5rem;
+        height: 1.6rem;
+        opacity: 0;
+        position: absolute;
+        border:1px solid red;
+        left:50%;
+        transform: translate(-50%,0);
+      }
+      .input-file .front {
+        top:0.83rem;
+      }
+      .input-file .verso {
+        top:0.83rem;
+      }
+      .idCardImg {
+        margin-top:0.24rem;
+      }
+      .idCard {
+        margin: 0 auto;
+        text-align: center;
+
+      }
+      .idCard .ImgFace {
+        width: 2.5rem;
+        height: 1.6rem;
+      }
+      .idCard p {
+        margin-top:0.14rem;
+        font-size: 0.14rem;
+        color:#999999;
+      }
+      .idCard2 {
+        margin-top:0.24rem;
+      }
+      .tips {
+        margin-top:0.24rem;
+        margin-left:0.14rem;
+      }
+      .tips p:first-child{
+        color:#333333;
+        font-size: 0.14rem;
+      }
+      .tips p:last-child{
+        font-size: 0.12rem;
+        color:#999999;
+        line-height: 0.2rem;
+      }
+      .btn{
+        margin-bottom: 0.14rem
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="idCardImage">
+        <div class="common-header">身份信息</div>
+        <div class="line-status">
+          <div>
+            <div class="line-box">
+                <p class="point now-point">
+                  <!--选中状态 -->
+                    <span class="select-point" v-show="status>=1"></span>
+                </p>
+                <p class="line"></p>
+            </div>
+            <div class="msg select-msg">身份信息</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point">
+                  <span class="select-point" v-show="status>=2"></span>
+              </p>
+              <p class="line" :class="{active1: status>=2}"></p>
+            </div>
+            <div class="msg">人脸识别</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point">
+                  <span class="select-point" v-show="status>=3"></span>
+              </p>
+              <p class="line" :class="{active1: status>=3}"></p>
+            </div>
+            <div class="msg">绑银行卡</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point ">
+                  <span class="select-point" v-show="status>=5"></span>
+              </p>
+            </div>
+            <div class="msg last-point">交易密码</div>
+          </div>
+        </div>
+        <!-- 上传正反面身份证 -->
+        <div class="idCardImg">
+          <!-- 正面照 -->
+          <div class="idCard idCard1">
+            <!-- 测试h5摄像头 兼容问题？ capture="camera" 默认唤起摄像头-->
+            <!-- <input class="input-file front" type="file" accept="image/*" capture="camera" multiple @change="idCardImgBtn(1)" ref="inputFile1">
+            <img class="ImgFace" :src='imgBaseUrl+"CardResource/img/idCard1.png"'  v-if ="showImg1"> -->
+            <img class="ImgFace" :src='imgBaseUrl+"CardResource/img/idCard1.png"' @click="idCardImgBtn(1)"  v-if ="showImg1">
+            <img   ref="idCardImage1" v-show ="!showImg1">
+            <p>请拍摄身份证人脸正面</p>
+          </div>
+          <!-- 反面照 -->
+          <div class="idCard idCard2">
+            <input class="input-file verso" type="file" accept="image/*" multiple @change="idCardImgBtn(2)" ref="inputFile2">
+            <img class="ImgFace" :src='imgBaseUrl+"CardResource/img/idCard2.png"' v-if ="showImg2">
+            <img v-show ="!showImg2" ref="idCardImage2" >
+            <p>请拍摄身份证国徽面</p>
+          </div>
+        </div>
+        <!-- 提示信息 -->
+        <div class="tips">
+          <p>身份证照片要求</p>
+          <p>请拍摄你本人的二代身份证原件,拍摄时请保持身份证边框完整、字体清晰、亮度均匀、为提高通过率，请尝试将相机横向拍摄</p>
+        </div>
+        <div class="weui-btn common-btn btn" @click="toPage('IdCardCheck')">核对信息</div>
+      </div>
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/lrz.all.bundle.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      status: 1,
+      dataurl1: '',
+      dataurl2: '',
+      orImage1: '',
+      showImg1: true,
+      showImg2: true
+      // canvas:''
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+    },
+    mounted () {
+      this.getParam = getParams();
+    },
+    methods: {
+      jsSDKInit () {
+        var  that = this;
+        this.isLoading = weui.loading('加载中');
+        var jsData = {
+          Url: location.href.split('#')[0]
+        };
+        ajaxPost(zyHost+'/pweixin/JsApiQry.do', jsData, function (resp) {
+          resp = JSON.parse(resp);
+          that.isLoading.hide();
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + resp.appId + "&redirect_uri=";
+          url += encodeURIComponent(location.href.split('OpenCardOnline')[0]+"OpenCardOnline/IdCardCheck.html?tel="+that.getParam.tel);
+          url += "&response_type=code&scope=snsapi_base&state=#wechat_redirect";
+          window.location.href = url;
+        })
+      },
+      // H5唤起摄像头
+      idCardImgBtn (id) {
+        this.canvas = document.createElement('canvas')
+        this.context = this.canvas.getContext('2d')
+        this.getImageBase(id)
+      },
+      // 获取图片base64
+      getImageBase (id) {
+        var  that = this
+        var  inputVal
+        if (id === 1) {
+          // window.location.href="./paizhao3.html"
+          inputVal = this.$refs.inputFile1.files
+          lrz(inputVal[0],{width:1200})
+          .then(function(rst){
+            that.$refs.idCardImage1.src = rst.base64
+            that.dataurl1 = rst.base64
+            that.showImg1 = false
+            that.$refs.idCardImage1.width = '250'
+            that.$refs.idCardImage1.height = '160'
+            // var  strLen = rst.base64.length
+            // var  filesize = strLen - (strLen/8)*2
+            // console.log("1:::::"+filesize)
+          })
+          .catch(function(){
+            // console.log(err)
+          })
+        } else if (id === 2) {
+          inputVal = this.$refs.inputFile2.files
+          lrz(inputVal[0],{width:1200})
+          .then(function(rst){
+            that.$refs.idCardImage2.src = rst.base64
+            that.dataurl2 = rst.base64
+            that.showImg2 = false
+            that.$refs.idCardImage2.width = '250'
+            that.$refs.idCardImage2.height = '160'
+          })
+          .catch(function(err){
+            // console.log(err)
+            // alert(err)
+          })
+          .always(function(msg){
+            // alert(msg)
+          })
+        }
+      },
+      idCardImgCheck () {
+        if (this.showImg1 === true) {
+          alert('请拍摄身份证人脸正面')
+          return false
+        }
+        if (this.showImg2 === true) {
+          alert('请拍摄身份证国徽面')
+          return false
+        }
+      },
+      toPage (page) {
+        var  that = this
+        var  params = {
+          facade: this.dataurl1,
+          back: this.dataurl2
+        }
+        window.localStorage.setItem('pictureFile', JSON.stringify(params));
+        if (this.idCardImgCheck() === false) {
+          return false
+        }
+        // sessionStorage.setItem('pictureFile', JSON.stringify(params));
+        // window.location.href = page + '.html'
+        this.jsSDKInit()
+      }
+    }
+  })
+  </script>
+</html>

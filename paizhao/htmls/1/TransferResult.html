@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <!-- <script src="../../CardResource/js/filter.js" type="text/javascript" charset="utf-8"></script> -->
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+     [v-cloak] {
+        display: none;
+      }
+      .TransferResult {
+        margin:0 auto;
+      }
+      .infoResult {
+        background:#fff;
+        padding-bottom:0.14rem;
+      }
+      .infoTips{
+        text-align: center;
+        padding-top: 0.14rem
+      }
+      .infoTips img {
+        width: 0.5rem;
+        height: 0.5rem
+      }
+      .infoTips p:nth-child(2){
+        margin-top: 0.14rem;
+        font-size: 0.16rem
+      }
+      .infoTips p:nth-child(3){
+        margin-top: 0.1rem;
+        font-size: 0.12rem;
+        color:#999999;
+      }
+      .infoResult .bankInfo{
+        margin:0.14rem;
+        border:1px solid #ECF9FF;
+        background:#ECF9FF;
+        margin-bottom:0px;
+      }
+      .infoResult .common{
+        display:flex;
+        justify-content: space-between;
+        margin-top:0.14rem;
+      }
+      .infoResult .common p:first-child{
+        padding-left:0.14rem;
+      }
+      .infoResult .common p:last-child{
+        padding-right:0.14rem;
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="TransferResult">
+          <!-- 绑卡结果 -->
+          <!-- <div class="common-header" v-if="fromPage ==='BankCardComplete'">结果</div>
+          <div class="infoResult" v-if="fromPage ==='BankCardComplete'">
+            <div class="infoTips">
+              <img :src="imgBaseUrl+'CardResource/img/succes.png'">
+              <p>绑卡成功</p>
+            </div>
+            <div class="bankInfo">
+              <div class="common">
+                <p>绑定卡</p>
+                <p>{{BankCardRes.bankCardName}}/{{BankCardRes.bankCardNum}}</p>
+              </div>
+              <div class="common">
+                <p>电子卡号</p>
+                <p>中原银行/{{BankCardRes.myCardNum}}</p>
+              </div>
+            </div>
+          </div> -->
+          <!--转入、转出结果页 -->
+          <div class="common-header" v-if="(fromPage ==='MoneyInto') || (fromPage ==='MoneyRollOut')">交易结果</div>
+          <div class="infoResult" v-if="(fromPage ==='MoneyInto') || (fromPage ==='MoneyRollOut')">
+            <div class="infoTips">
+              <img :src="imgBaseUrl+'CardResource/img/succes.png'">
+              <p>交易已受理</p>
+              <p>预计30分钟内到账</p>
+            </div>
+            <!-- 转入 -->
+            <div class="bankInfo" v-if="fromPage ==='MoneyInto'">
+              <div class="common">
+                <p>收款金额</p>
+                <p>{{IntoRes.accountNum}}元</p>
+              </div>
+              <div class="common">
+                <p>转出卡号</p>
+                <p>{{IntoRes.outCardName}}/{{IntoRes.outCardNum}}</p>
+              </div>
+              <div class="common">
+                <p>转入卡号</p>
+                <p>中原银行/{{IntoRes.intoCardNum}}</p>
+              </div>
+            </div>
+            <!-- 转出 -->
+            <div class="bankInfo" v-if="fromPage ==='MoneyRollOut'">
+              <div class="common">
+                <p>付款金额</p>
+                <p>{{OutRes.accountNum}}元</p>
+              </div>
+              <div class="common">
+                <p>转入卡号</p>
+                <p>{{OutRes.intoCardName}}/{{OutRes.intoCardNum}}</p>
+              </div>
+              <div class="common">
+                <p>转出卡号</p>
+                <p>中原银行/{{OutRes.outCardNum}}</p>
+              </div>
+            </div>
+          </div>
+          <div class="weui-btn common-btn" @click="toPage()">完成</div>
+      </div>    
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      fromPage:''
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+      var getParam = getParams();
+      this.fromPage = getParam.fromPage
+      if (this.fromPage === 'MoneyInto') {
+        this.IntoRes = JSON.parse(sessionStorage.getItem('IntoRes'))
+      } else if (this.fromPage === 'MoneyRollOut') {
+        this.OutRes = JSON.parse(sessionStorage.getItem('OutRes'))
+      } else if (this.fromPage === 'BankCardComplete') {
+        this.BankCardRes = JSON.parse(sessionStorage.getItem('BankCardRes'))
+      }
+    },
+    mounted () {
+      // this.isLoading = weui.loading('加载中');
+      var  ua = window.navigator.userAgent.toLowerCase();
+      // console.log(ua)
+      if(ua.match(/MicroMessenger/i)=='micromessenger'){
+      };
+    },
+    methods: {
+      // 完成到交易明细
+      jsSDKInit () {
+        var  that = this;
+        var jsData = {
+          Url: location.href.split('#')[0]
+        };
+        ajaxPost(zyHost+'/pweixin/JsApiQry.do', jsData, function (resp) {
+          resp = JSON.parse(resp);
+          // var url = https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx40fd94cce984eca0&redirect_uri=https%3A%2F%2Fwbs.zyebank.net%2Fpweixin%2Fweixin%2Findex.html%3Fpage%3Duz0TG5NcEjUM5dh%2BCrCOUpM4iVeMM42xShmZ3Gi6TfaLuZFFqnGQxqEcEs9%2B6VBy&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect
+          var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + resp.appId + "&redirect_uri=";
+          url += window.encodeURIComponent(location.protocol+"//"+location.host+ "/pweixin/weixin/index.html?page=uz0TG5NcEjUM5dh+CrCOUpM4iVeMM42xShmZ3Gi6TfaLuZFFqnGQxqEcEs9+6VBy");
+          url += "&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+          // console.log("全部:"+url)
+          window.location.href = url;
+        })
+      },
+      // 完成返回上一页
+      toPage () {
+        this.jsSDKInit()
+      }
+    }
+  })
+  </script>
+</html>

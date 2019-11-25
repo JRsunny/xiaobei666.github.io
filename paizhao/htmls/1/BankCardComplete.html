@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>中原银行</title>
+<meta name="description" content="" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+<script src="../../CardResource/js/vue.min.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="../../CardResource/js/filter.js" type="text/javascript"
+	charset="utf-8"></script>
+<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+<!-- <link rel="stylesheet" href="../../CardResource/js/swiper/swiper.min.css" /> -->
+<link rel="stylesheet" href="../../CardResource/css/base.css" />
+
+<style type="text/css">
+[v-cloak] {
+	display: none;
+}
+
+.BankCardComplete {
+	margin: 0 auto;
+}
+
+.BankCardComplete .bankCardMsg {
+	/* margin-top:0.12rem; */
+	padding-left: 0.15rem;
+	background: #ffffff;
+	font-size: 0.14rem;
+}
+
+.BankCardComplete .bankCardCom {
+	display: flex;
+	border-bottom: 1px solid #e6e6e6;
+	height: 0.44rem;
+	line-height: 0.44rem;
+	/* font-size: 0.18rem; */
+}
+
+.BankCardComplete .bankCardNum {
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.idCard {
+	display: flex;
+	/* border-bottom:1px solid #e6e6e6; */
+	height: 0.44rem;
+	line-height: 0.44rem;
+	/* font-size: 0.18rem; */
+}
+
+.idCard p:first-child {
+	/* margin-left:0.3rem; */
+	width: 0.8rem;
+}
+
+.idCard p:last-child {
+	margin-left: 0.17rem;
+	height: 0.44rem;
+	line-height: 0.44rem;
+	/* outline: medium; */
+	width: 2.4rem;
+}
+
+.BankCardComplete .bankCardCom p:first-child {
+	/* margin-left:0.3rem; */
+	width: 0.8rem;
+}
+
+.BankCardComplete .input {
+	margin-left: 0.2rem;
+	height: 0.44rem;
+	line-height: 0.44rem;
+	outline: medium;
+	width: 2.4rem;
+}
+
+.BankCardComplete .inputNum {
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.bankCardAdds {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-left: 0.17rem;
+	height: 0.44rem;
+	width: 2.4rem;
+}
+
+.veCodeCheck {
+	background: #fff;
+	margin-top: 0.14rem;
+}
+
+.veCodeCheck .common {
+	display: flex;
+	border-bottom: 1px solid #e6e6e6;
+	height: 0.44rem;
+	margin-left: 0.14rem;
+	font-size: 14px;
+}
+
+.veCodeCheck .common p {
+	line-height: 0.44rem;
+	width: 0.7rem;
+}
+
+.veCodeCheck .commonCode {
+	border: none;
+}
+
+.veCodeCheck .input1 {
+	margin-left: 0.3rem;
+	height: 0.44rem;
+	line-height: 0.3rem;
+	outline: medium;
+	width: 1.3rem;
+}
+
+.veCodeCheck .inputPhone {
+	border-bottom: 1px solid #e6e6e6;
+}
+
+.veCodeCheck .btn_veCode {
+	height: 0.44rem;
+	width: 1.2rem;
+	line-height: 0.44rem;
+	color: #00bfff;
+	background: #fff;
+	text-align: center;
+}
+
+.BankCardComplete .tips {
+	margin-top: 0.2rem;
+	margin-left: 0.14rem;
+}
+
+.tips P:first-child {
+	color: #FF5922;
+}
+/* 协议框 */
+.cldAcct-agreeBtn {
+	position: relative;
+	width: 0.14rem;
+	height: 0.14rem;
+	border: 1px solid #d1d1d1;
+	background-color: #fff;
+	border-radius: 2px;
+	outline: none;
+	appearance: none;
+	-webkit-appearance: none;
+	top: 0.02rem;
+	margin-right: 10px;
+}
+
+.cldAcct-agreeBtn:checked {
+	border: none;
+}
+
+.cldAcct-agreeBtn:checked:before {
+	content: '';
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: url('../../CardResource/img/checkbox-1.png');
+	/* background: url(http://download.zybank.com.cn/weixinimage/css/images/CloudAccount/icon_checked02.png) no-repeat center; */
+	background-size: 100%;
+}
+
+.kaihu-agreeBox {
+	margin-top: 0.14rem;
+	padding-left: 0.14rem;
+	font-size: 12px;
+	color: #999;
+}
+
+.protocol {
+	color: #18baf9;
+}
+
+.subBtn {
+	color: #fff;
+}
+
+.subDiv {
+	display: flex;
+	justify-content: center;
+	font-size: 0.18rem;
+	margin-left: -0.14rem;
+}
+
+.colorBtn {
+	background: #cccccc;
+	color: #999999;
+}
+/* 协议 */
+.Agreement {
+	background: #fff;
+	line-height: 0.3rem;
+	padding-left: 0.14rem;
+	padding-right: 0.14rem;
+	padding-bottom: 0.65rem;
+}
+
+.p-title {
+	padding-top: 0.2rem;
+	text-align: center;
+	font-size: 0.18rem;
+}
+
+.agreementBtn {
+	text-align: center;
+	color: #fff;
+	font-size: 0.18rem;
+	position: fixed;
+	bottom: 0.2rem;
+}
+</style>
+</head>
+<body>
+	<div id="app" v-cloak>
+		<div class="BankCardComplete" v-show="!isAgreementShow">
+			<div class="common-header">绑定银行卡</div>
+			<div>
+				<div class="bankCardMsg">
+					<div class="bankCardCom bankCardNum">
+						<p>银行卡号</p>
+						<input class="input inputNum" v-model="compBankNum"
+							placeholder="您本人名下的银行卡号" @keyup="keyUpBankNum" @blur="blur"
+							oninput="if(value.length>26)value=value.slice(0,26)" type="tel" />
+					</div>
+					<div class="bankCardCom">
+						<p>开户行</p>
+						<p class="bankCardAdds">{{compBankAdd}}</p>
+						<!-- <input class="input inputNum" v-model="compBankAdd" placeholder="请输入您的开户行" /> -->
+					</div>
+					<div class="idCard">
+						<p>身份证号</p>
+						<p>{{comIdCard}}</p>
+						<!-- <input class="input" placeholder="请输入你的开户行" /> -->
+					</div>
+				</div>
+				<!-- 手机号验证码 -->
+				<div class="veCodeCheck">
+					<div class="common">
+						<p>手机号码</p>
+						<input class="input1 inputPhone" placeholder="请输入您的手机号"
+							v-model="phone" @keyup="keyUpTel"
+							oninput="if(value.length>13)value=value.slice(0,13)" type="tel" />
+					</div>
+					<div class="common commonCode">
+						<p>验证码</p>
+						<input class="input1" placeholder="请输入您的验证码" v-model="veCode"
+							type="tel" oninput="if(value.length>6)value=value.slice(0,6)" />
+						<button class="btn_veCode" v-bind:disabled="repeat"
+							@click="veCodeBtn()">{{veCodeText}}</button>
+					</div>
+				</div>
+			</div>
+			<div class="weui-flex kaihu-agreeBox">
+				<input type="checkbox" class="cldAcct-agreeBtn"
+					v-model="agreeProtocolBtn" @click="skipSubmit()" />
+				<div class="weui-cell__bd">
+					<p>
+						我已认真阅读并同意 <a @click="toAgreement()" class="protocol">《中原银行银联代扣签约协议书》</a>
+					</p>
+				</div>
+			</div>
+			<div class="subDiv">
+				<button class="common-btn subBtn"
+					v-bind:disabled="!agreeProtocolBtn"
+					:class="{colorBtn: !agreeProtocolBtn}"
+					@click="nextBtn('TransferResult','BankCardComplete')">提交</button>
+			</div>
+			<!-- <div class="weui-btn common-btn" @click="nextBtn('TransferResult','BankCardComplete')">确定</div> -->
+			<!-- 提示 -->
+			<div class="tips">
+				<p>温馨提示</p>
+				<p>1.您的绑定卡号必须为本人名下的银行卡号</p>
+			</div>
+		</div>
+
+		<!-- 中原银行银联代扣协议：只第一次显示。协议名字和卡号待修改 ？-->
+		<div class="Agreement" v-show="isAgreementShow">
+			<!-- <div class="common-header">中原银行个人电子账户服务协议</div> -->
+			<!-- 标题和头部 -->
+			<div>
+				<div class="p-title font-18">
+					<strong>中原银行银联代扣签约协议书</strong>
+				</div>
+				<div>
+					&nbsp;&nbsp;&nbsp;&nbsp;甲方：<u>{{personInfo.CusName}}</u>
+				</div>
+				<div>&nbsp;&nbsp;&nbsp;&nbsp;乙方：中原银行股份有限公司（以下简称“中原银行”）</div>
+				<div>
+					&nbsp;&nbsp;&nbsp;&nbsp;甲乙双方本着自愿、平等、互利的原则，达成以下银联代扣协议，双方承诺共同遵守：</div>
+			</div>
+			<!-- 内容部分 -->
+			<div>
+				<!-- 第一条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;一、甲方授权乙方在接收到甲方收款请求后，从甲方授权机构指定的银行结算账户向收款账户划转相应资金，单笔金额上限和日累计金额上限以甲方授权机构规定为准。</strong>
+
+				</div>
+				<!-- 第二条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;二、甲方应保证本协议中所填信息的真实、有效、完整。因本协议中甲方登记信息有误造成的一切责任和损失由甲方承担。</strong>
+
+				</div>
+				<!-- 第三条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;三、甲方应在付款账户中保留足够余额，保证乙方能够按照协议及时收款。</strong>
+
+				</div>
+				<!-- 第四条 -->
+				<div>
+					<strong>
+						&nbsp;&nbsp;&nbsp;&nbsp;四、甲方有权向乙方提出对本协议进行修改。甲方修改本协议时，需先终止原授权支付协议，再签署新银联代扣协议。</strong>
+					</br>
+
+				</div>
+				<!-- 第五条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;五、甲方有权解除本协议。甲方发起撤销协议指令，经乙方确认后本协议方可解除。</strong>
+
+				</div>
+				<!-- 第六条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;六、乙方收到甲方收款请求后，应根据协议内容进行检查，检查通过后准确收款。</strong>
+
+				</div>
+				<!-- 第七条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;七、乙方未按照协议内容进行收款并造成甲方损失的，乙方应承担相应责任。但因以下原因造成收款请求未能完成，所造成的经济损失及其相关责任全部由甲方承担：</strong>
+					<p>
+						&nbsp;&nbsp;&nbsp;&nbsp; 1.甲方授权机构账户可用余额不足；</br>
+						&nbsp;&nbsp;&nbsp;&nbsp; 2.收款金额高于甲方授权机构规定的限额；</br>
+						&nbsp;&nbsp;&nbsp;&nbsp; 3.由乙方原因造成的账户状态不正常，如账户挂失、冻结、止付等账户异常；</br>
+						&nbsp;&nbsp;&nbsp;&nbsp; 4.有权机关对账户执行冻结等措施。</br>
+					</p>
+				</div>
+				<!-- 第八条 -->
+				<div>
+					<strong> &nbsp;&nbsp;&nbsp;&nbsp;
+						八、乙方按照甲方授权收款后，甲方对收款金额、收款次数不符等因甲方授权机构或付款单位造成的问题提出异议的，甲方应向授权机构或付款单位进行查询。</strong>
+					</br>
+
+				</div>
+				<!-- 第九条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;九、因不可抗力、意外事件、不可预见的系统故障以及不可归责于乙方的其他原因导致无法及时收款并造成甲方损失的，乙方不承担责任，但乙方保证尽快采取其他方式使交易正常运行。</strong>
+
+				</div>
+				<!-- 第十条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;十、本协议如与国家新颁布的法律、法规、条例等相抵触，以国家新颁布的法律、法规、条例为准。</strong>
+
+				</div>
+				<!-- 第十一条 -->
+				<div>
+					<strong>&nbsp;&nbsp;&nbsp;&nbsp;十一、本协议自甲方点击“同意签约”后生效，至甲方注销服务时终止。</strong>
+
+				</div>
+			</div>
+			<div class="common-btn agreementBtn" @click="toAgreement">返回</div>
+		</div>
+	</div>
+
+
+</body>
+<!-- <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script> -->
+<script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+<!-- <script src="../../CardResource/js/swiper/swiper.min.js"></script> -->
+<!-- <script src="../../CardResource/js/iscroll-probe.js"></script> -->
+<script src="../../CardResource/js/weui/weui.min.js"></script>
+<script src="../../CardResource/js/base.js"></script>
+<script src="../../CardResource/js/prompt.js"></script>
+<script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      compBankNum:'',
+      compBankAdd:'银行卡开户行地址',
+      bankId:'',
+      comIdCard:'',
+      phone: '',
+      veCode: '',
+      veCodeText: '获取验证码',
+      repeat: false,
+      IdCard: '',
+      agreeProtocolBtn: false,
+      isAgreementShow:false,
+      personInfo:{
+        CusName: '客户'
+      },
+      WeixinId: ''
+    },
+    created () {
+      var  that = this;
+      // that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      // if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+      // that.loading = weui.loading('loading……');
+      // setTimeout(function(){
+      //   that.loading.hide(function(){})
+      // },500);
+      that.getWeixinUser()
+      if (sessionStorage.getItem('IdCard')) {
+        this.comIdCard = sessionStorage.getItem('IdCard')
+      }
+      if (JSON.parse(sessionStorage.getItem('personInfo'))) {
+        this.personInfo = JSON.parse(sessionStorage.getItem('personInfo'))
+      }
+    },
+    mounted () {
+      // this.isLoading = weui.loading('加载中');
+      var  ua = window.navigator.userAgent.toLowerCase();
+      console.log(ua)
+      if(ua.match(/MicroMessenger/i)=='micromessenger'){
+        // this.jsSDKInit();
+      };
+    },
+    methods: {
+    	getWeixinUser () {
+            var  that = this;
+            var  getParam = getParams();
+            console.log(getParam)
+            if (sessionStorage.getItem('wxZY')) {
+              // console.log(sessionStorage.getItem('wxZY').OpenId)
+              var  wxZY = JSON.parse(sessionStorage.getItem('wxZY'))
+              console.log('用户信息---->', JSON.stringify(wxZY, null, 2))
+              if (wxZY.InvalidFlag == 1) { // 判断是否失效 ? 引导用户重新进来？
+                // that.isLoading.hide();
+                // alert('页面已失效，请重新打开');
+                return;
+              }
+              if (wxZY.Subscribe + '' == '0') { // 未关注，返回跳转到关注引导页面
+                // that.isLoading.hide();
+                var url = location.protocol + "//" + location.host + "/pweixin/weixin/app.html?m=QrCodeGuideAttention";
+                window.location.href = url;
+                return;
+              };
+              that.WeixinId = wxZY.OpenId
+            } else {
+              // alert('请从首页重新填写信息')
+              console.log('没有openid')
+              // 根据appid和secret 获取用户code，请求接口获取appid保存起来。然后开户的时候上送，绑定微信和开户的关系
+              var  formData = {
+                "Code": getParam.code || '',
+                "PageFlag": "OpenCardOnline"
+              };
+              console.log('微信上送code---->', JSON.stringify(formData, null, 2))
+              ajaxPost(zyHost+"/pweixin/QueryWeixinUser.do", formData, function (data) {
+                console.log('微信用户信息---->', (data, null, 2))
+                data = JSON.parse(data);
+                that.WeixinId = data.OpenId
+                console.log(that.WeixinId)
+                if (data._RejCode === '888888') {
+                  // that.isLoading.hide();
+                  alert(data._RejMsg)
+                  return;
+                };
+                if (window.sa) window.sa.login(data.OpenId);
+                if (!sessionStorage.getItem('wxZY')) {
+                  console.log('---无缓存---');
+                  sessionStorage.setItem('wxZY', JSON.stringify(data));
+                }
+              });
+            }
+          },
+      skipSubmit () {
+        this.agreeProtocolBtn = !this.agreeProtocolBtn
+      },
+      toAgreement () {
+        console.log(this.isAgreementShow)
+        this.isAgreementShow = !this.isAgreementShow
+      },
+      keyUpBankNum () {
+        this.compBankNum = comFormatBankNum(this.compBankNum)
+      },
+      keyUpTel () {
+        this.phone = comFormatTel(this.phone)
+      },
+      // 查询银行卡地址
+      blur () {
+        var  that = this
+        var  partrnCard = /^[0-9]{13,25}$/;
+        var  bankNum = this.compBankNum.replace(/\s/g, '')
+        if (this.compBankNum === '') {
+          return false
+        }
+        // 限制银行卡号长度（13-25）位
+        if (!partrnCard.exec(bankNum)) {
+          return false;
+        }
+        var  parmars = {
+          "CardBin": that.compBankNum.replace(/\s/g, '')
+        }
+        var  url = zyHost+'/pweixin/BankIdQry.do'
+        // var  url = './mockdata/'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          console.log(data)
+          if (data._RejCode === '000000') {
+            that.compBankAdd = data.BankName
+            that.bankId = data.BankId
+            // that.isLoading.hide();
+          } else {
+            // var  data1 = JSON.parse(data)
+            // that.isLoading.hide();
+            alert(data._RejMsg)
+            return
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      },
+     // 获取验证码,点击按钮请求验证码交易
+      veCodeBtn() {
+        if (this.inputCheck() === false) {
+          return false
+        }
+        var  that = this
+        // 点击按钮，开始倒计时
+        var  time = 59
+        var  timer = setInterval(function () {
+          that.veCodeText = '重新获取(' + time + 'S)'
+          time = time - 1
+          if (time === 0) {
+            that.repeat = false
+            that.veCodeText = '重新获取'
+            clearInterval(timer)
+          }
+        }, 1000)
+        var  parmars = {
+          // 格式转化
+          'Phone': that.phone.replace(/\s/g, '')
+        }
+        that.repeat = true
+        // 短信验证码交易
+        var  url = zyHost+'/pweixin/MCOTPPreAuthenticate.do'
+        // var  url = './CrossRowVeriCode.json'
+        ajaxPost(url, parmars, function (data) {
+          // var  data1 = JSON.parse(data)
+          // console.log(JSON.parse(data)._RejCode)
+          if (data._RejCode === '000000') {
+            // 给个提示
+            alert('短信口令已发送到')
+            console.log('获取短信成功')
+          }
+        }, function (erro) {
+          alert(erro._RejMsg);
+        })
+      },
+      // 前端校验手机号和验证码.
+      inputCheck (parmars) {
+        var  partrnCard = /^[0-9]{13,25}$/;
+        var  compBankNum = this.compBankNum.replace(/\s/g, '')
+        if (this.compBankNum === '') {
+          alert('银行卡号不能为空哦')
+          return false
+        }
+        // 限制银行卡号长度（13-25）位
+        if (!partrnCard.exec(compBankNum)) {
+          alert("请输入正确的账号");
+          return false;
+        }
+        if (this.compBankAdd === '') {
+          alert('开户行不能为空哦')
+          return false
+        }
+        if (this.phone === '') {
+          alert('手机号不能为空哦')
+          return false
+        }
+        if (!(/^(?:(?:(?:13[0-9])|(?:14[57])|(?:15[0-35-9])|(?:16[0-9])|(?:19[0-9])|(?:17[0-9])|(?:18[0-9]))\d{8})|(?:170[057-9]\d{7})$/.test(this.phone.replace(/\s/g, '')))) {
+          alert('请输入正确的手机号')
+          return false
+        }
+        if (parmars === 'next') {
+          if (this.veCode === '') {
+            alert('验证码不能为空哦')
+            return false
+          }
+          if (!(/^\d{6}$/).test(this.veCode)) {
+            alert('请输入正确的6位验证码')
+            return false
+          }
+        }
+      },
+      toPage (to,from) {
+        // 我的账户：在前个页面带过过来
+        var  myCardNum = sessionStorage.getItem('AcctNo')
+        var  bankNum = this.compBankNum.replace(/\s/g, '')
+        var  bankCardNum = bankNum.substring(bankNum.length-4)
+        var  BankCardRes = {
+          'bankCardNum': bankCardNum, // 要绑定的银行卡
+          'bankCardName': this.compBankAdd, // 绑定银行卡的名字
+          "myCardNum": myCardNum // 
+        }
+        sessionStorage.setItem('BankCardRes', JSON.stringify(BankCardRes));
+        if (from) {
+          window.location.href = to + '.html?fromPage=' +from 
+        } else {
+          window.location.href = to + '.html'
+        }
+      },
+      // 绑卡接口，短信验证码通过了，在调绑卡接口
+      addCard (to,from) {
+        var  that = this 
+        var  ApplyId = sessionStorage.getItem('ApplyId')
+        var  parmars = {
+          "AccountNo": that.compBankNum.replace(/\s/g, ''), 
+          "BankName": that.compBankAdd,
+          "BankId":that.bankId,
+          "WeixinId": that.WeixinId,
+          "Phone": that.phone.replace(/\s/g, '')
+        }
+        console.log('绑卡上送数据---->', JSON.stringify(parmars, null, 2))
+        // 绑卡接口
+        var  url = zyHost+'/pweixin/MyAccountBindCard.do'
+        // var  url = './mockdata/'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          console.log('绑卡成功---->', JSON.stringify(data, null, 2))
+          // console.log(data._RejMsg)
+          if (data._RejCode === '000000') {
+            // that.isLoading.hide();
+            that.toPage(to,from)
+          } else {
+            // that.isLoading.hide();
+            alert(data._RejMsg)
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      },
+      nextBtn(to,from) {
+        // 下一步校验,防止重复提交
+        if (this.inputCheck('next') === false) {
+          return false
+        }
+        // 验证成功的接口
+        var  that = this
+        var  parmars = {
+          "OTPPassword": that.veCode
+        }
+        // 本地测试
+        // that.addCard(to,from)
+        var  url = zyHost+'/pweixin/MCOTPAuthenticateV1.do'
+        // var  url = './MCOTPAuthenticateV1.json'
+        ajaxPost(url, parmars, function (data1) {
+          var  data = JSON.parse(data1)
+          if (data.Success == "1") {
+            alert('短信验证码错误');
+            // $scope.getTokenVal(); //获取getToken，防止重复提交
+          } else if (data.Success == "4") {
+            alert('短信验证码已过期，请重新获取');
+            // $scope.getTokenVal(); //获取getToken，防止重复提交
+          } else if (data.Success == "0") {
+            alert('请先获取短信验证码');
+            // $scope.getTokenVal(); //获取getToken，防止重复提交
+          } else if (data.Success == "2") { // 验证码通过
+            that.addCard(to,from)
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      }
+    }
+  })
+  </script>
+</html>

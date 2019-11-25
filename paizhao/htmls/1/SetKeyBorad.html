@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+       [v-cloak] {
+        display: none;
+      }
+      .pwdInput{
+        width:3.2rem;
+        height: 1.4rem;
+        background:#fff;
+        border-radius: 0.05rem;
+        text-align: center;
+        transform: translate(-50%,0);
+        position: absolute;
+        /* top: 1rem; */
+        bottom:3.2rem;
+        z-index: 9000;
+        border:1px solid #999999;
+        left: 50%;
+      }
+      .pwdInput img {
+        position: absolute;
+        top:0.14rem;
+        right:0.14rem;
+        width: 0.14rem;
+        height: 0.14rem;
+       }
+       .pwdInput .pwdTips{
+         font-size:0.18rem;
+         margin-top:0.24rem;
+       }
+       .inputCon {
+         display: flex;
+         margin-top:0.24rem;
+         justify-content: center;
+       }
+       .inputCon p {
+         width: 0.45rem;
+         height: 0.45rem;
+         border:1px solid #999999;
+         border-right:none;
+         display: flex;
+        justify-content: center;
+        align-items: center;
+       }
+       .inputCon p:last-child{
+        border-right:1px solid #999999;
+       }
+       /* 交易密码样式 */
+       /* 自定义背景遮罩 */
+       .keyBg {
+        position: absolute;
+        top:0rem;
+        left:0rem;
+        background: rgb(153, 153, 153);
+        width: 100%;
+        height: 100%;
+        opacity: 0.5;
+       }
+       .kbd-mask{
+        background:#fff!important;
+        display: none!important;
+       }
+       .NumberDigitKBD {
+        background:#fff!important;
+       }
+       .pwdkbdwrap {
+         height: 0px!important;
+       }
+       .tips {
+        margin-top:0.24rem;
+        margin-left:0.14rem;
+      }
+      .tips p{
+        font-size: 0.12rem;
+        color:#999999;
+        line-height: 0.2rem;
+        margin-top:0.14rem;
+      }
+      .tips p:first-child{
+        color:#333333;
+        font-size: 0.16rem;
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="SetKeyBorad">
+        <div class="common-header">请设置交易密码</div>
+        <!-- 密码输入框 -->
+        <div class="pwdInput" v-show="pwdInputShow">
+          <img :src="imgBaseUrl+'CardResource/img/AddContact.png'" @click="closeSheet">
+          <div class="pwdTips">请输入交易密码</div>
+          <div class="inputCon">
+            <p>
+              <span v-show="pwdStatus>0">●</span>
+            </p>
+            <p>
+              <span v-show="pwdStatus>1">●</span>
+            </p>
+            <p>
+              <span v-show="pwdStatus>2">●</span>
+            </p>
+            <p>
+              <span v-show="pwdStatus>3">●</span>
+            </p>
+            <p>
+              <span v-show="pwdStatus>4">●</span>
+            </p>
+            <p>
+              <span v-show="pwdStatus>5">●</span>
+            </p>
+          
+          </div>
+        </div>
+        <!-- 密码确认框 -->
+        <div class="pwdInput" v-show="pwdInputShow1">
+            <img :src="imgBaseUrl+'CardResource/img/AddContact.png'"  @click="closeCheckSheet">
+            <div class="pwdTips">请确认交易密码</div>
+            <div class="inputCon">
+              <p>
+                <span v-show="pwdStatus1>0">●</span>
+              </p>
+              <p>
+                <span v-show="pwdStatus1>1">●</span>
+              </p>
+              <p>
+                <span v-show="pwdStatus1>2">●</span>
+              </p>
+              <p>
+                <span v-show="pwdStatus1>3">●</span>
+              </p>
+              <p>
+                <span v-show="pwdStatus1>4">●</span>
+              </p>
+              <p>
+                <span v-show="pwdStatus1>5">●</span>
+              </p>
+            </div>
+          </div>
+        <!-- /* 自定义背景遮罩 */ -->
+        <div class="keyBg"></div>
+        <!-- 密码键盘 -->
+        <div id="page">
+          <!-- 第一次显示的键盘 -->
+          <div id="areaNumber">
+            <div id="numberInput" diasbled="true" tabIndex="1" kbdtype="Number" placeholder="请输入设置密码" maxlen="6" exponent-hex="10001"
+                 modulus-hex="981674c85ac97e7bff20588c3966cf18b8ef1db56f70215773c77c311ad9f7aa3290bee3908fdf43e563c04b0580a45685b98cdfef090addca9c35bec25a523f539b2577dedc46c49621211778eaeb2ee959fccca50b54239350ecdc4405546f4ed18babb7a932471bcb07202ad8c2aa76403b4c7aeb67a2a218ac0d2247ec01"
+                >
+            </div>
+          </div>
+          <div id="areaNumber1">
+            <div id="numberInput1" tabIndex="1" kbdtype="Number" placeholder="请输入确认密码" maxlen="6" exponent-hex="10001"
+              modulus-hex="981674c85ac97e7bff20588c3966cf18b8ef1db56f70215773c77c311ad9f7aa3290bee3908fdf43e563c04b0580a45685b98cdfef090addca9c35bec25a523f539b2577dedc46c49621211778eaeb2ee959fccca50b54239350ecdc4405546f4ed18babb7a932471bcb07202ad8c2aa76403b4c7aeb67a2a218ac0d2247ec01">
+            </div>
+          </div>
+        </div>
+        <!-- 提示信息 -->
+        <div class="tips">
+            <p>设置6位数字交易密码</p>
+            <p>1.交易密码用于转入、转出</p>
+            <p>2.交易密码避免是重复、连续的数字</p>
+        </div>
+        <div class="weui-btn common-btn" @click="setKey">开始设置密码</div>
+      </div>
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/pwd.min.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      pwdStatus:0,
+      pwdStatus1:0,
+      pwdInputShow: false,
+      pwdInputShow1: false,
+      pwdMi:'',
+      keyBgShow: false,
+      numKeyboard: false,
+      numKeyboard1: false,
+      WeixinId:'',
+      NickName:''
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+      this.getWeixinUser()
+    },
+    mounted () {
+      var  that = this
+      var  ua = window.navigator.userAgent.toLowerCase();
+      if(ua.match(/MicroMessenger/i)=='micromessenger'){
+      };
+      $("#page").loadKBD(zyHost + "/pweixin/CreateKeyboard.do")
+    },
+    methods: {
+      // 获取用户appid
+      getWeixinUser () {
+        var  that = this;
+        var  getParam = getParams();
+        if (sessionStorage.getItem('wxZY')) {
+          var  wxZY = JSON.parse(sessionStorage.getItem('wxZY'))
+          // console.log('用户信息---->', JSON.stringify(wxZY, null, 2))
+          // if (wxZY.InvalidFlag == 1) { // 判断是否失效 ? 引导用户重新进来？
+          //   // that.isLoading.hide();
+          //   return;
+          // }
+          // if (wxZY.Subscribe + '' == '0') { // 未关注，返回跳转到关注引导页面
+          //   // that.isLoading.hide();
+          //   var url = location.protocol + "//" + location.host + "/pweixin/weixin/app.html?m=QrCodeGuideAttention";
+          //   window.location.href = url;
+          //   return;
+          // };
+          that.WeixinId = wxZY.OpenId
+          // 增加昵称
+          that.NickName = wxZY.NickName
+        } else {
+          if (getParam) {
+            var  formData = {
+              Code: getParam.code,
+              PageFlag: "OpenCardOnline"
+            };
+          }
+          ajaxPost(zyHost+"/pweixin/QueryWeixinUser.do", formData, function (data1) {
+            data = JSON.parse(data1);
+            that.WeixinId = data.OpenId
+            that.NickName = data.NickName
+            // if (window.sa) window.sa.login(data.OpenId);
+            if (!sessionStorage.getItem('wxZY')) {
+              console.log('---无缓存---');
+              sessionStorage.setItem('wxZY', JSON.stringify(data));
+            }
+          });
+        }
+      },
+      setKey () {
+        var  that = this
+        this.isLoading = weui.loading('加载中');
+        if (this.numKeyboard) {
+          // 点击过关闭在进来
+          $("#page").loadKBD(zyHost + "/pweixin/CreateKeyboard.do")
+          setTimeout (function () {
+            that.isLoading.hide();
+            $("#numberInput").showKBD({
+              "areaId": "areaNumber",
+              "pageId": "page",
+              "cursor": false,
+              "mask": false
+            });
+            if ($(".kbd-pic")[0]) {
+              that.pwdInputShow = true
+              this.keyBgShow = true
+            } else {
+              console.log("加载失败")
+            }
+            $("#page .kbd-key").find('.number-common-char').eq(0).bind('touchstart',function(){
+              $('#page #PWDKBD').remove()
+              that.numKeyboard = true
+              that.pwdInputShow = false
+              that.keyBgShow = false
+            })
+          },2000)
+        } else {
+          // 第一次进来false
+          setTimeout (function () {
+            that.isLoading.hide();
+            $("#numberInput").showKBD({
+              "areaId": "areaNumber",
+              "pageId": "page",
+              "cursor": false,
+              "mask": false
+            });
+            if ($(".kbd-pic")[0]) {
+              that.numKeyboard = true
+              that.keyBgShow = true
+              that.pwdInputShow = true
+            } else {
+              console.log("加载失败")
+            }
+            $("#page .kbd-key").find('.number-common-char').eq(0).bind('touchstart',function(){
+              $('#page #PWDKBD').remove()
+              that.numKeyboard = true
+              that.pwdInputShow = false
+              that.keyBgShow = false
+            })
+          },1000)
+        }
+        $('#numberInput').bind('DOMNodeInserted',function(){
+          var len = $(this).text().replace('|','').length
+          that.pwdStatus = len;
+        })
+      },
+      setKey1 () {
+        var  that = this
+        this.isLoading = weui.loading('加载中');
+        // 显示键盘,输入框和键盘一起显示 .判断确认键盘是第几进来.要想清除键盘密码，必须重现加载键盘
+        // 进来的时候，加载确认密码键盘
+        this.pwdInputShow = false
+        setTimeout (function(){
+          that.isLoading.hide();
+          $("#numberInput1").showKBD({
+            "areaId": "areaNumber1",
+            "pageId": "page",
+            "cursor": false,
+            "mask": false
+          });
+          that.pwdInputShow1 = true
+          $("#page .kbd-key").find('.number-common-char').eq(0).bind('touchstart', function () {
+            $('#page #PWDKBD').remove()
+            that.pwdInputShow1 = false
+            that.keyBgShow = false
+          })
+        },1000)
+        $('#numberInput1').bind('DOMNodeInserted',function(){
+          var len = $(this).text().replace('|','').length
+          that.pwdStatus1 = len;
+        }) 
+      },
+      closeSheet () {
+        this.numKeyboard = true
+        this.pwdInputShow = false
+        this.keyBgShow = false
+        $('#page #PWDKBD').remove()
+        $('#numberInput').hideKBD()
+      },
+      closeCheckSheet () {
+        this.pwdInputShow1 = false
+        this.keyBgShow = false
+        $('#page #PWDKBD').remove()
+        $('#numberInput1').hideKBD()
+      },
+      checkPwd () {
+        var  val = $("#numberInput1").checkPWD("numberInput");
+        var  pwd = $('#numberInput1').getKBD();
+        this.pwdMi = pwd
+        // console.log('加密密文---->', JSON.stringify(pwd, null, 2))
+        switch (val) {
+          case 1:
+            this.closeCheckSheet();
+            this.postPwd()
+            break;
+            return;
+          case 2:
+            console.log("输入不一致"); // 密码不一致时，.
+            this.closeCheckSheet(); // 隐藏第二个输入框
+            alert("密码输入不一致")
+            break;
+            return;
+          case 3:
+            this.closeCheckSheet(); // 隐藏第二个输入框
+            alert("请输入确认密码");// 
+            break;
+            return;
+          case 4:
+            this.closeCheckSheet(); // 隐藏第二个输入框
+            alert("请输入密码");// 唤起第一次的输入框。重新输入
+            break;
+            return;
+          case 5:
+            this.closeCheckSheet(); // 隐藏第二个输入框
+            alert("请输入密码和确认密码"); //唤起第一次的输入框。重新输入 
+            break;
+            return;
+        }
+      },
+      // 上送密文
+      postPwd () {
+        this.isLoading = weui.loading('加载中');
+        var  that = this
+        var  ApplyId = sessionStorage.getItem('ApplyId')
+        var  parmars = {
+          "Pwd":this.pwdMi,
+          "ApplyId": ApplyId,
+          "WeixinId": this.WeixinId,  // 获取appid
+          "WeixinName": this.NickName
+        }
+        // console.log('开户上送字段---->', JSON.stringify(parmars, null, 2))
+        var  url = zyHost+'/pweixin/OpenCardApplySetPwd.do'
+        ajaxPost(url, parmars, function (data) {
+          // console.log('开户返回结果---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.isLoading.hide();
+            window.location.replace('OpenAccountResult.html')
+          } else {
+            that.isLoading.hide();
+            if (typeof data === "string") {
+              var data = JSON.parse(data)
+              alert(data._RejMsg)
+            } else {
+              alert(data._RejMsg)
+            }
+            // window.location.replace('OpenCardOnline.html')
+          }
+        }, function (erro) {
+        })
+      }
+    },
+    watch: {
+      pwdStatus (old,newval) {
+        if (old===6) {
+          $('#numberInput').hideKBD()
+          this.setKey1()
+        }
+      },
+      pwdStatus1 (old,newval) {
+        if (old===6) {
+          this.checkPwd()
+        }
+      }
+    }
+  })
+  </script>
+</html>

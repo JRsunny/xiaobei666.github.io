@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    <style type="text/css">
+      [v-cloak] {
+        display: none;
+      }
+      .line-status{
+        display: flex;
+        padding-top:0.14rem;
+        justify-content: center;
+        background:#ffffff;
+      }
+      .line-box {
+        display: flex;
+        align-items: center;
+      }
+      .point {
+        width: 0.13rem;
+        height: 0.13rem;
+        background-color: #cccccc;
+        border-radius: 50%;
+      }
+      .now-point {
+        width: 0.13rem;
+        height: 0.13rem;
+        background-color: #00bfff;
+        border-radius: 50%;
+      }
+      .select-point {
+        width: 0.23rem;
+        height: 0.23rem;
+        background-color: #00bfff;
+        border-radius: 50%;
+        position: absolute;
+        opacity: 0.4;
+        top:0.49rem;
+        left: 0.3rem;
+      }
+      .line {
+        height: 0.02rem;
+        width: 0.8rem;
+        background-color:#CECECE;
+      }
+      .msg {
+        margin-left:-0.3rem;
+        margin-top:0.1rem;
+        color:#999999;
+      }
+      .select-msg{
+        color:#333333;
+      }
+      .idCardImg {  
+        padding:0 0.14rem;
+        display: flex;
+        background:#ffffff;
+        justify-content:space-between;
+      }
+      .idCardImg img {
+        width: 1.66rem;
+        height: 1.05rem;
+        margin-top:0.24rem;
+        margin-bottom: 0.14rem;
+      }
+      .idCard1 {
+        margin:0.3rem;
+        text-align: center;
+      }
+      .idCard1 p {
+        margin-top:0.2rem;
+      }
+      .idCard2 {
+        text-align: center;
+      }
+      .idCardMsg {
+        margin-top:0.08rem;
+        padding-left:0.14rem;
+        background:#ffffff;
+      }
+      .idCardCom  {
+        display: flex;
+        border-top:1px solid #e6e6e6;
+        height: 0.44rem;
+        line-height: 0.44rem;
+        font-size: 0.14rem;
+      }
+      .idCardName {
+        border: none;
+      }
+      .idCardCom P:first-child {
+        width:0.9rem;
+      }
+      .idCardCom p:last-child{
+        margin-left:0.3rem;
+      }
+      .big-career {
+        width: 0.93rem;
+      }
+      .career {
+        display: flex;
+        margin-left:0.3rem;
+        width:2.5rem;
+        align-items: center;
+      }
+      .career .img_right {
+        width: 0.09rem;
+        height: 0.18rem;
+      }
+      .career div {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width:2.2rem;
+      }
+      .img_right1 {
+        width: 0.09rem;
+        height: 0.18rem;
+      }
+      .input {
+        margin-left:0.3rem;
+        height: 0.44rem;
+        line-height: 0.3rem;
+        outline: medium;
+        width: 2.4rem;
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app" v-cloak>
+      <div class="idCardCheck">
+        <div class="common-header">绑定银行卡</div>
+        <div class="line-status">
+          <div>
+            <div class="line-box">
+              <p class="point now-point">
+                <!--选中状态 -->
+                  <span class="select-point" v-show="status>=1"></span>
+              </p>
+              <p class="line"></p>
+            </div>
+            <div class="msg select-msg">身份信息</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point">
+                  <span class="select-point" v-show="status>=2"></span>
+              </p>
+              <p class="line" :class="{active1: status>=2}"></p>
+            </div>
+            <div class="msg">人脸识别</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point">
+                  <span class="select-point" v-show="status>=3"></span>
+              </p>
+              <p class="line" :class="{active1: status>=3}"></p>
+            </div>
+            <div class="msg">绑银行卡</div>
+          </div>
+          <div>
+            <div class="line-box">
+              <p class="point ">
+                  <span class="select-point" v-show="status>=5"></span>
+              </p>
+            </div>
+            <div class="msg last-point">交易密码</div>
+          </div>
+        </div>
+        <!-- 上传正反面身份证 -->
+        <div>
+          <!-- 正面照 -->
+          <div  class="idCardImg">
+            <img :src="imgBaseUrl+'CardResource/img/idCard1.png'" v-show ="showImg1">
+            <img :src="idCardImage1" v-show ="!showImg1">
+            <img :src="imgBaseUrl+'CardResource/img/idCard2.png'" v-show ="showImg1">
+            <img :src="idCardImage2" v-show ="!showImg1" style="background:#ffffff">
+          </div>
+          <!-- 身份证信息 -->
+          <div class="idCardMsg">
+            <div class="idCardCom idCardName">
+              <p>真实姓名</p>
+              <p>{{IdInfo.CusName}}</p>
+            </div>
+            <div class="idCardCom idCardnum">
+              <p>身份证号</p>
+              <p>{{IdInfo.IdNo}}</p>
+            </div>
+            <div class="idCardCom">
+              <div class="big-career" >
+                职业大类
+              </div>
+              <!-- weui picker -->
+              <div class="career" @click="careerBtn">
+                <div>{{FirstCareerSelect}}</div>
+                <img class="img_right" :src='imgBaseUrl+"CardResource/img/right.png"'>
+              </div>
+            </div>
+            <div class="idCardCom">
+                <div class="big-career" >
+                  职业细类
+                </div>
+                <!-- weui picker -->
+                <div class="career" @click="careerBtn1">
+                  <div>{{SecondCareerSelect}}</div>
+                  <img class="img_right1" :src='imgBaseUrl+"CardResource/img/right.png"'>
+                </div>
+            </div>
+            <div class="idCardCom">
+                <p>推荐人工号</p>
+                <input  class="input inputPhone" placeholder="请输入推荐人工号" v-model="labour"  oninput="if(value.length>6)value=value.slice(0,6)" type="tel"
+     />
+              </div>
+          </div>
+        </div>
+        <div class="weui-btn common-btn" @click="getDeviceId()">下一步</div>
+      </div>
+    </div>
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=2b51190616374d97d2656794a3cea4df&plugin=AMap.CitySearch"></script>
+  <script src="../../CardResource/js/fingerprint2.js"></script>
+  <script>
+  var app = new Vue({
+    el: "#app",
+    data:{
+      status: 1,
+      idCardImage1: '',
+      idCardImage2: '',
+      showImg1: true,
+      IdInfo:{
+        CusName: '客户',
+        IdNo: '身份证号',
+        HeadContentID: ''
+      },
+      FirstCareerSelect: '办事人员和有关人员',
+      SecondCareerSelect: '行政办公人员',
+      FirstCareerList: [], // 一级职业类型
+      SecondCareerList: [], // 二级职业类型
+      isClick1:false,
+      isClick2:false,
+      labour:'' ,// 推荐人工号,
+      CityInfo: {
+        city: "郑州",
+        longitude: '',
+        latiude: '',
+        adcode:''
+      },
+      DeviceId: '',
+      WeixinId: '',
+      tel:''
+    },
+    created () {
+      var  that = this;
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
+      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+      this.isLoading = weui.loading('加载中');
+      // this.getParam = getParams();
+    },
+    mounted () {
+      this.getWeixinUser()
+      this.showCityInfo()
+    },
+    methods: {
+      // 获取用户appid
+      getWeixinUser () {
+        var  that = this;
+        var  getParam = getParams();
+        that.tel = getParam.tel
+        if (sessionStorage.getItem('wxZY')) {
+          var  wxZY = JSON.parse(sessionStorage.getItem('wxZY'))
+          // console.log('用户信息---->', JSON.stringify(wxZY, null, 2))
+          that.WeixinId = wxZY.OpenId
+          that.getIdCardInfo()
+          that.getCareer()
+        } else {
+          if (getParam) {
+            var  formData = {
+              Code: getParam.code,
+              PageFlag: "OpenCardOnline"
+            };
+          }
+          ajaxPost(zyHost+"/pweixin/QueryWeixinUser.do", formData, function (data1) {
+            data = JSON.parse(data1);
+            that.WeixinId = data.OpenId
+            that.getIdCardInfo()
+            that.getCareer()
+            // if (window.sa) window.sa.login(data.OpenId);
+            if (!sessionStorage.getItem('wxZY')) {
+              // console.log('---无缓存---');
+              sessionStorage.setItem('wxZY', JSON.stringify(data));
+            }
+          });
+        }
+      },
+      // 获取设备指纹信息，设备唯一标识
+      getDeviceId () {
+        var  that = this
+        Fingerprint2.get(function (components) {
+          var  murmur = Fingerprint2.x64hash128(components.map(function (pair) { return pair.value }).join(), 31)
+          that.toPage(murmur)
+          // that.DeviceId = murmur
+          // alert(that.DeviceId)
+        })
+      },
+      // 根据ip获取地理位置
+      showCityInfo () {
+        var  that = this
+        var  citySearch = new AMap.CitySearch();
+        citySearch.getLocalCity(function(status,result){
+          if (status==='complete'&&result.info==='OK') {
+            if (result&&result.city&&result.bounds){
+              that.CityInfo.city = result.city
+              that.CityInfo.adcode = result.adcode
+              var  index = result.rectangle.indexOf(',')
+              that.CityInfo.longitude = result.rectangle.substring(0,index)
+              var  index1 = result.rectangle.indexOf(';')
+              that.CityInfo.latiude = result.rectangle.substring(index+1,index1)
+            }
+          }
+        })
+        // console.log(that.CityInfo)
+      },
+      // 接口获取身份证图片和信息图片信息
+      getIdCardInfo () {
+        var  that = this
+        var pictureFile = JSON.parse(window.localStorage.getItem('pictureFile'))
+        if (pictureFile) {
+          that.showImg1 = false
+          that.idCardImage1 = pictureFile.facade
+          that.idCardImage2 = pictureFile.back
+        }
+        var  parmars = {
+          "pictureFile_facade": this.idCardImage1.substring(this.idCardImage1.indexOf(',')+1),
+          "pictureFile_back": this.idCardImage2.substring(this.idCardImage2.indexOf(',')+1),
+          "phone": that.tel
+        }
+        // console.log('身份证识别信息---->', JSON.stringify(parmars, null, 2))
+        var  url = zyHost+'/pweixin/IdCardRecognition.do'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          // console.log('身份证识别信息---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.isLoading.hide();
+            window.localStorage.clear()
+            that.IdInfo = data
+            that.IdInfo.CusName = data.CusName
+            that.IdInfo.IdNo = data.IdNo
+            that.IdInfo.HeadContentID = data.HeadContentID
+          } else {
+            that.isLoading.hide();
+            if (typeof data === "string") {
+              var data = JSON.parse(data)
+              weui.alert(data._RejMsg, {
+                title: '中原银行温馨提示',
+                buttons: [{
+                  label: '确定',
+                  type: 'default',
+                  onClick: function () {
+                    window.location.href = 'IdCardImage.html?tel='+that.tel
+                  }
+                }]
+              });
+            } else {
+              weui.alert(data._RejMsg, {
+                title: '中原银行温馨提示',
+                buttons: [{
+                  label: '确定',
+                  type: 'default',
+                  onClick: function () {
+                    window.location.href = 'IdCardImage.html?tel='+that.tel
+                  }
+                }]
+              });
+            }
+          }
+        }, function (erro) {
+
+        })
+      },
+      // 一级职业类型 
+      getCareer () {
+        var  that = this
+        var  parmars = {
+          // "vocationcode": '0'
+        }
+        var  url = zyHost+'/pweixin/VocationCodeListQry.do'
+        // var  url = './VocationCodeListQry.json'
+        ajaxPost(url, parmars, function (data) {
+          // console.log('获取用户一级职业---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.defaultCode = data.List[0].vocationcode
+            data.List.forEach(function(item){
+              var  FirstCareerObj = {}
+              FirstCareerObj['label'] = item.vocationdesc
+              FirstCareerObj['value'] = item.vocationcode
+              that.FirstCareerList.push(FirstCareerObj)
+            });
+            that.FirstCareerSelect = that.FirstCareerList[0].label
+            that.isClick1 = true
+            that.getCareer1(1)
+          } else {
+            alert(data._RejMsg)
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      },
+      getCareer1 (msg) {
+        var  that = this
+        that.SecondCareerList = []
+        var  parmars = {}
+        if (msg === 1) {
+          parmars = {
+            "ParentCode": that.defaultCode
+          }
+        } else {
+          parmars = {
+            "ParentCode": that.FirstCareerCode
+          }
+        }
+        var  url = zyHost+'/pweixin/VocationCodeListQry.do'
+        // var  url = './VocationCodeListQry.json'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          // console.log('获取二级职业类型---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            data.List.forEach(function(item){
+              var  SecondCareerObj = {}
+              SecondCareerObj['label'] = item.vocationdesc
+              SecondCareerObj['value'] = item.vocationcode
+              that.SecondCareerList.push(SecondCareerObj)
+            });
+            that.isClick2 = true
+            that.SecondCareerSelect = that.SecondCareerList[0].label
+          } else {
+            alert(data._RejMsg)
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      },
+      careerBtn () {
+        var  that = this
+        if (that.isClick1 === false) {
+          return
+        }
+        // console.log(that.FirstCareerList)
+        weui.picker(
+          that.FirstCareerList, 
+          {
+            className: 'custom-classname',
+            container: 'body',
+            defaultValue: [0],
+            onChange: function (res) {
+            },
+            onConfirm: function (res) {
+              that.FirstCareerSelect = res[0].label
+              that.FirstCareerCode = res[0].value
+              that.getCareer1()
+            },
+            id: 'FirstCareerList'
+          }
+        )
+      },
+      careerBtn1 () {
+        var  that = this
+        if (that.isClick2 === false) {
+          return
+        }
+        // console.log(that.SecondCareerList)
+        weui.picker(
+          that.SecondCareerList, 
+          {
+            className: 'custom-classname',
+            container: 'body',
+            defaultValue: [0],
+            onChange: function (res) {
+            },
+            onConfirm: function (res) {
+              that.SecondCareerSelect = res[0].label
+              that.SecondCareerCode = res[0].value
+            }
+          }
+        )
+      },
+      // 下一步
+      toPage (murmur) {
+        var that = this
+        this.isLoading = weui.loading('加载中');
+        // 信息校验
+        var  that = this
+        var  parmars = {
+          "IsAvailable": this.IdInfo.IsAvailable,
+          "CusName": this.IdInfo.CusName,
+          "EndDate": this.IdInfo.EndDate,
+          "BeginDate": this.IdInfo.BeginDate,
+          "BirthDay": this.IdInfo.BirthDay,
+          "IdNo": this.IdInfo.IdNo,
+          "Gender": this.IdInfo.Gender,
+          "Address": this.IdInfo.Address,
+          "Race": this.IdInfo.Race,
+          "ImageDate":  this.IdInfo.ImageDate,
+          "Authotity": this.IdInfo.Authotity,
+          "FaceContentID": this.IdInfo.FaceContentID,
+          "BackContentID": this.IdInfo.BackContentID,
+          "ImageSerialNo": this.IdInfo.ImageSerialNo,
+          "VocationCode": this.SecondCareerCode || '000C',
+          "AcctExec": this.labour,
+          "HeadContentID": this.IdInfo.HeadContentID,
+          "DeviceId": murmur,
+          "WeixinId": this.WeixinId,
+          "City": this.CityInfo.city,
+          "Longitude": this.CityInfo.longitude,
+          "Latitude":  this.CityInfo.latiude ,
+          "CityCode": this.CityInfo.adcode
+        }
+        var  personInfo = {
+          "CusName": this.IdInfo.CusName
+        }
+        // console.log('保存信息上送字段---->', JSON.stringify(parmars, null, 2))
+        // console.log("客户姓名"+personInfo)
+        sessionStorage.setItem('personInfo', JSON.stringify(personInfo));
+        var  url = zyHost+'/pweixin/OpenCardApplyInfoSave.do'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          // console.log('保存信息成功---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000') {
+            that.isLoading.hide();
+            sessionStorage.setItem('ApplyId', data.ApplyId)
+            window.location.href = 'OcrCheck.html'
+          } else {
+            that.isLoading.hide();
+            if (typeof data === "string") {
+              var data = JSON.parse(data)
+              weui.alert(data._RejMsg, {
+                title: '中原银行温馨提示',
+                buttons: [{
+                  label: '确定',
+                  type: 'default',
+                  onClick: function () {
+                    window.location.href = 'IdCardImage.html?tel='+that.tel
+                  }
+                }]
+              });
+            } else {
+              weui.alert(data._RejMsg, {
+                title: '中原银行温馨提示',
+                buttons: [{
+                  label: '确定',
+                  type: 'default',
+                  onClick: function () {
+                    window.location.href = 'IdCardImage.html?tel='+that.tel
+                  }
+                }]
+              });
+            }
+          }
+        }, function (erro) {
+          // alert(erro._RejMsg);
+        })
+      }
+    }
+  })
+  </script>
+</html>

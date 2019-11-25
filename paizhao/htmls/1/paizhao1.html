@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>中原银行</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+
+    <style type="text/css">
+        [v-cloak] {
+            display: none;
+        }
+
+        .idCardImage {
+            background: #fff;
+        }
+
+        .line-status {
+            display: flex;
+            margin-top: 0.14rem;
+            justify-content: center;
+        }
+
+        .line-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .point {
+            width: 0.13rem;
+            height: 0.13rem;
+            background-color: #cccccc;
+            border-radius: 50%;
+        }
+
+        .now-point {
+            width: 0.13rem;
+            height: 0.13rem;
+            background-color: #00bfff;
+            border-radius: 50%;
+        }
+
+        .select-point {
+            width: 0.23rem;
+            height: 0.23rem;
+            background-color: #00bfff;
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0.4;
+            top: 0.49rem;
+            left: 0.3rem;
+        }
+
+        .line {
+            height: 0.02rem;
+            width: 0.8rem;
+            background-color: #CECECE;
+        }
+
+        .msg {
+            margin-left: -0.3rem;
+            margin-top: 0.1rem;
+            color: #999999;
+        }
+
+        .select-msg {
+            color: #333333;
+        }
+
+        .input-file {
+            width: 2.5rem;
+            height: 1.6rem;
+            opacity: 0;
+            position: absolute;
+            border: 1px solid red;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .input-file .front {
+            top: 0.83rem;
+        }
+
+        .input-file .verso {
+            top: 0.83rem;
+        }
+
+        .idCardImg {
+            margin-top: 0.24rem;
+        }
+
+        .idCard {
+            margin: 0 auto;
+            text-align: center;
+
+        }
+
+        .idCard .ImgFace {
+            width: 2.5rem;
+            height: 1.6rem;
+        }
+
+        .idCard p {
+            margin-top: 0.14rem;
+            font-size: 0.14rem;
+            color: #999999;
+        }
+
+        .idCard2 {
+            margin-top: 0.24rem;
+        }
+
+        .tips {
+            margin-top: 0.24rem;
+            margin-left: 0.14rem;
+        }
+
+        .tips p:first-child {
+            color: #333333;
+            font-size: 0.14rem;
+        }
+
+        .tips p:last-child {
+            font-size: 0.12rem;
+            color: #999999;
+            line-height: 0.2rem;
+        }
+
+        .btn {
+            margin-bottom: 0.14rem
+        }
+    </style>
+</head>
+
+<body>
+    <!--
+理想情况下我们应该先判断你的设备上是否
+有摄像头或相机，但简单起见，我们在这里直接
+写出了HTML标记，而不是用JavaScript先判断
+然后动态生成这些标记
+-->
+    <video autoplay="" id="video2" style="width:500px;height:500px;"></video>
+    <canvas id="canvasCemara" width="400" height="600"></canvas>
+
+    <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="../OpenCardOnline/viewfinder111.png">
+    <button id="btn" style="position:absolute;width:80px;padding: 20px;    top: 381px;
+left: 40%;z-index: 1000000;">拍摄</button>
+
+
+    <input type="file" capture="camera" accept="image/*" />1
+
+    <input type="file" accept="image/*" mutiple="mutiple" capture="camera" />2
+
+    <input type="button" accept="image/*" mutiple="mutiple" capture="camera" />3
+
+    <!-- JS -->
+</body>
+
+
+<script>
+    /**
+   * 组件：调用摄像头拍摄的构造函数
+   * @params {Object} options 参数如下：
+   *         video  {DOM} video元素
+   *         width  {Number} 画布宽度
+   *         height  {Number} 画布高度
+   *         onShoot  {Function} 录像回调函数
+   *         onError  {Function} error回调函数
+   * 调用：
+   *     Camera.create(options);
+   */
+    // Put event listeners into place
+    var video = document.getElementById('video2');
+    var constraints = {
+        audio: false,
+        video: true
+        // video:{ facingMode: "user" }
+        // video:{ facingMode: { exact: "environment" } }
+    };
+    function successCallback(stream) {
+        video.srcObject = stream;
+        video.play();
+    }
+    function errorCallback(error) {
+        console.log("navigator.getUserMedia error: ", error);
+        //  $(".CameraTips").show();
+    }
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(successCallback)
+        .catch(errorCallback);
+
+    document.getElementById("btn").addEventListener("click", function () {
+        var video = document.getElementById('video2');
+        canvas = document.getElementById('canvasCemara');
+        ctx = canvas.getContext('2d');
+        var _w = 300, _h = 600;
+        if (video.videoWidth > 0) _h = video.videoHeight / (video.videoWidth / _w);
+        canvas.setAttribute('width', _w);
+        canvas.setAttribute('height', _h);
+        ctx.fillRect(0, 0, _w, _h);
+        ctx.drawImage(video, 0, 0, _w, _h);
+    });
+
+</script>
+
+</html>
