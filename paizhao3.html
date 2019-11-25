@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Camera selection</title>
+  <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+  <link rel="stylesheet" href="../../CardResource/css/base.css" />
   <link rel="stylesheet" href="./app.css" />
 
 </head>
@@ -23,11 +26,11 @@
         <option></option>
       </select>
     </div>
-    <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
-left: 12%;z-index: 9999;" src="./shenfen1.png">
-    <video id="video" autoplay playsinline></video>
+    <!-- <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="./shenfen1.png"> -->
+    <video id="video" autoplay playsinline  style="width:100%"></video>
 
-    <canvas id="canvasCemara" class="canvasCemara" width="400" height="600"></canvas>
+    <canvas id="canvasCemara" class="canvasCemara" width="400"></canvas>
   </main>
 
   <footer>
