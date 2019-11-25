@@ -13,23 +13,26 @@
 <body>
 
   <header>
-    <h1>身份证识别 原生模拟</h1>
+    <h1>相机识别 原生模拟</h1>
   </header>
 
   <main>
     <div class="controls">
-      <button id="button">点击打开摄像头-camera</button>
+      <button id="button">选择摄像头-camera</button>
       <select id="select">
         <option></option>
       </select>
     </div>
-
+    <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="./shenfen1.png">
     <video id="video" autoplay playsinline></video>
+
+    <canvas id="canvasCemara" class="canvasCemara" width="400" height="600"></canvas>
   </main>
 
   <footer>
     <p>
-      <a href="#">郭小北拍照</a>
+      <a href="#" id="btn-paizhao">拍照</a>
     </p>
   </footer>
 

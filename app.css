@@ -37,6 +37,9 @@ video {
   display: block;
   margin: 0 auto;
 }
+.canvasCemara{
+  margin: 20px auto;
+}
 
 footer {
   background: #333e5a;
