@@ -9,6 +9,11 @@ function stopMediaTracks(stream) {
   });
 }
 
+function getUrlKey(name) {
+  return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
+
+}
+
 function gotDevices(mediaDevices) {
   select.innerHTML = '';
   select.appendChild(document.createElement('option'));
@@ -60,12 +65,30 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   var video = document.getElementById('video');
   canvas = document.getElementById('canvasCemara');
   ctx = canvas.getContext('2d');
-  var _w = 300, _h = 600;
+  var _w = 250, _h = 160;
   if (video.videoWidth > 0) _h = video.videoHeight / (video.videoWidth / _w);
   canvas.setAttribute('width', _w);
   canvas.setAttribute('height', _h);
   ctx.fillRect(0, 0, _w, _h);
   ctx.drawImage(video, 0, 0, _w, _h);
+
+  var pictureFilefont= canvas.toDataURL();  //获取图片的DataURL
+
+  if(getUrlKey('pictureFileid') == 1){  // 正面
+    window.localStorage.setItem('pictureFilefont', JSON.stringify(pictureFilefont));
+    if(window.localStorage.getItem('pictureFilefont')){
+      window.location.href="./IdCardImage.html?pictureFilefont=1"
+    }
+
+  }
+  if(getUrlKey('pictureFileid') == 2){  // 反面
+    window.localStorage.setItem('pictureFileback', JSON.stringify(pictureFilefont)); 
+    if(window.localStorage.getItem('pictureFileback')){
+
+      window.location.href="./IdCardImage.html?pictureFilefont=2"
+    }
+  }
+
 });
 
 navigator.mediaDevices.enumerateDevices().then(gotDevices);
