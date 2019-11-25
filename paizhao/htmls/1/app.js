@@ -65,8 +65,9 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   var video = document.getElementById('video');
   canvas = document.getElementById('canvasCemara');
   ctx = canvas.getContext('2d');
-  var _w = 320, _h = 500;
-  if (video.videoWidth > 0) _h = video.videoHeight / (video.videoWidth / _w);
+  var _w = 500, _h = 320;
+  if (video.videoWidth > 0)
+    // _h = video.videoHeight / (video.videoWidth / _w);
   canvas.setAttribute('width', _w);
   canvas.setAttribute('height', _h);
   ctx.fillRect(0, 0, _w, _h);
