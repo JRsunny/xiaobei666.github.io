@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>拍照</title>
+  <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+  <!-- <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+  <link rel="stylesheet" href="../../CardResource/css/base.css" /> -->
+  <link rel="stylesheet" href="./app.css" />
+
+</head>
+
+<body>
+
+  <header>
+    <h1>相机识别-原生模拟</h1>
+  </header>
+
+  <main>
+    <div class="controls">
+      <button id="button">打开摄像头-camera</button>
+      <select id="select">
+        <option></option>
+      </select>
+
+    </div>
+    <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="./bg-zhengmian.png">
+     <video id="video" autoplay  style="width:320px;height: 500px;"></video>
+      <button id="btn-paizhao">点 击拍 照</button>
+
+    <canvas id="canvasCemara" class="canvasCemara" style="width:250px;height: 160px;" width="250"></canvas>
+  </main>
+
+  <footer>
+    <p>
+      <a href="#" id="btn-paizhao22">拍照</a>
+    </p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+
+</html>

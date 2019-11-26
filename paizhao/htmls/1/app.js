@@ -32,6 +32,7 @@ function gotDevices(mediaDevices) {
 
 // button.addEventListener('click', event => {
   document.getElementById("button").addEventListener('click', event => {
+    alert('6')
   if (typeof currentStream !== 'undefined') {
     stopMediaTracks(currentStream);
   }
@@ -65,7 +66,7 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   var video = document.getElementById('video');
   canvas = document.getElementById('canvasCemara');
   ctx = canvas.getContext('2d');
-  var _w = 500, _h = 320;
+  var _w = 320, _h = 500;
   if (video.videoWidth > 0)
     // _h = video.videoHeight / (video.videoWidth / _w);
   canvas.setAttribute('width', _w);

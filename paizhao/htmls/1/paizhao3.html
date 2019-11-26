@@ -1,47 +1,259 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>中原银行</title>
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+    <link rel="stylesheet" href="../../CardResource/css/base.css" />
+    
+    
+    <style type="text/css">
+      [v-cloak] {
+        display: none;
+      }
+      .InfoCheck {
+        margin: 0 auto;
+      }
+      .InfoCheck p {
+        margin-top:0.74rem;
+        text-align: center;
+        color:#333333;
+        font-size:0.14rem;
+      }
+      .input-file {
+        height:0.4rem;
+        width:3.46rem;
+        opacity: 0;
+        position: absolute;
+        left:50%;
+        top:1.46rem;
+        transform: translate(-50%,0);
+      }
+      .tips {
+        margin-top:0.24rem;
+        margin-left:0.14rem;
+      }
+      .tips p:first-child{
+        color:#333333;
+        font-size: 0.14rem;
+      }
+      .tips p:last-child{
+        font-size: 0.12rem;
+        color:#999999;
+        line-height: 0.2rem;
+      }
+    </style>
+	</head>
+	<body>
+    <div id="app">
+      <div class="OcrCheck">
+        <div class="common-header">拍照</div>
+        <div>
+          <div class="tips">
+              <p>证件照片要求</p>
+              <p>请拍摄你本人证件照片,拍摄时请保持边框完整、亮度均匀、为提高通过率</p>
+          </div>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>拍照</title>
-  <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
-  <!-- <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
-  <link rel="stylesheet" href="../../CardResource/css/base.css" /> -->
-  <link rel="stylesheet" href="./app.css" />
+          <button class="weui-btn common-btn" id="button">打开摄像头，开始拍照</button>
+          <!-- <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="./bg-zhengmian.png"> -->
+          <img id="imgs" style="position:absolute;z-index: 9999;" src="./bg-zhengmian.png">
 
-</head>
+          <video id="video" autoplay ></video>
+          <select id="select">
+            <option></option>
+          </select>
+          <canvas id="canvasCemara" class="canvasCemara" style="width:250px;height: 160px;" width="250"></canvas>
+          <button class="weui-btn common-btn" id="btn-paizhao">点击拍照</button>
 
-<body>
+          
 
-  <header>
-    <h1>相机识别-原生模拟</h1>
-  </header>
-
-  <main>
-    <div class="controls">
-      <button id="button">打开摄像头-camera</button>
-      <select id="select">
-        <option></option>
-      </select>
-
+          <!-- <input class="input-file"type="button" accept="image/*" multiple @change="idCardImgBtn" ref="OCR"> -->
+          <!-- <img   ref="OcrImage" v-show ="false"> -->
+        </div>
+      </div> 
     </div>
-    <!-- <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
-left: 12%;z-index: 9999;" src="./shenfen1.png"> -->
-     <video id="video" autoplay  style="width:320px;height: 500px;"></video>
-      <button id="btn-paizhao">点 击拍 照</button>
-
-    <canvas id="canvasCemara" class="canvasCemara" style="width:250px;height: 160px;" width="250"></canvas>
-  </main>
-
-  <footer>
-    <p>
-      <a href="#" id="btn-paizhao22">拍照</a>
-    </p>
-  </footer>
-
+  </body>
+  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+  <script src="../../CardResource/js/weui/weui.min.js"></script>
+  <script src="../../CardResource/js/base.js"></script>
+  <script src="../../CardResource/js/lrz.all.bundle.js"></script>
+  <script src="../../CardResource/js/prompt.js"></script>
   <script src="./app.js"></script>
-</body>
 
+  
+  <script>
+    
+  /* var app = new Vue({
+    el: "#app",
+    data:{
+      OcrImage: '',
+      dataurl: ''
+    },
+    created () {
+    },
+    mounted () {
+    },
+    methods: {
+      // 唤起活体检测
+      idCardImgBtn () {
+        const video = document.getElementById('video');
+const button = document.getElementById('button');
+const select = document.getElementById('select');
+let currentStream;
+
+        this.isLoading = weui.loading('加载中');
+        alert('6')
+          if (typeof currentStream !== 'undefined') {
+            stopMediaTracks(currentStream);
+          }
+          const videoConstraints = {};
+          if (select.value === '') {
+            videoConstraints.facingMode = 'environment';
+            alert(videoConstraints.facingMode)
+          } else {
+            videoConstraints.deviceId = { exact: select.value };
+            alert(JSON.parse(videoConstraints))
+          }
+          const constraints = {
+            video: videoConstraints,
+            audio: false
+          };
+          navigator.mediaDevices
+            .getUserMedia(constraints)
+            .then(stream => {
+              currentStream = stream;
+              video.srcObject = stream;
+              return navigator.mediaDevices.enumerateDevices();
+            })
+            .then(gotDevices)
+            .catch(error => {
+              console.error(error);
+            });
+        // this.canvas = document.createElement('canvas')
+        // this.context = this.canvas.getContext('2d')
+        // this.getImage()
+      },
+      // 插件压缩,活体检测公安30k
+      getImage () {
+        var  that = this
+        var  inputVal = this.$refs.OCR.files
+        // 原图<30k处理
+        if (inputVal && inputVal[0]) {
+          var kbSize = (inputVal[0].size)/1024
+          if (kbSize<30) {
+            lrz(inputVal[0])
+            .then(function (rst) {
+              // that.dataurl = rst.base64
+              that.postOrcImg(rst.base64)
+              // console.log(that.dataurl)
+              // var  strLen = rst.base64.length
+              // var  filesize = (strLen - (strLen/8)*2)/1024
+              // console.log("1:::::"+filesize)
+            })
+            .catch(function () {
+              // console.log(err)
+            })
+          } else {
+            lrz(inputVal[0],{width:300})
+            .then(function (rst) {
+              // that.dataurl = rst.base64
+              // console.log(rst.base64)
+              that.postOrcImg(rst.base64)
+              var  strLen = rst.base64.length
+              var  filesize = (strLen - (strLen/8)*2)/1024
+              console.log("1:::::"+filesize)
+            })
+            .catch(function () {
+              // console.log(err)
+            })
+          }
+          // console.log(that.dataurl)
+          
+        }   
+      },
+       // 压缩图片,获取原图--》canvas压缩--》新图片
+      // compressImg (img) {
+      //   var  targetWidth = 375
+      //   var  targetHeight = (img.height*targetWidth)/img.width
+      //   this.canvas.width  = targetWidth
+      //   this.canvas.height = targetHeight
+      //   // 清除画布
+      //   this.context.clearRect(0,0,targetWidth,targetHeight)
+      //   // 重绘图片，压缩
+      //   this.context.drawImage (img,0,0,targetWidth,targetHeight)
+      //   // 计算base64的大小
+      //   this.dataurl = this.canvas.toDataURL('image/jpeg')
+      //   // console.log(this.dataurl)
+      //   var  strLen = this.dataurl.length
+      //   var  filesize = strLen - (strLen/8)*2
+      //   console.log("1:::::"+filesize)
+      // },
+      // getImageBase () {
+      //   var  that = this
+      //   var  inputVal = this.$refs.OCR.files
+      //   if (inputVal && inputVal[0]) {
+      //     var  reader = new FileReader();
+      //     reader.readAsDataURL(inputVal[0])
+      //     reader.onload = function (e) {
+      //       var  OcrImage =  that.$refs.OcrImage
+      //       OcrImage.src = e.target.result
+      //       OcrImage.onload = function () {
+      //         var  img = this
+      //         that.compressImg(img)
+      //         // that.postOrcImg()
+      //       } 
+      //     }
+      //   }
+      // },
+      //
+      postOrcImg(img) {
+        var  that = this
+        var  ApplyId = sessionStorage.getItem('ApplyId')
+        var  pictureFile_ocr = img.substring(img.indexOf(',') + 1)
+        var  parmars = {
+          "FacePic": pictureFile_ocr, //活体照片
+          "ApplyId": ApplyId
+        }
+        // console.log(parmars)
+        var  url = zyHost + '/pweixin/FaceRacognition.do'
+        ajaxPost(url, parmars, function (data) {
+          // var  data = JSON.parse(data1)
+          // console.log('活体检测结果---->', JSON.stringify(data, null, 2))
+          if (data._RejCode === '000000' && data.CheckResult === '0') {
+            that.isLoading.hide();
+            window.location.href = 'BankCardCheck.html'
+          } else {
+            that.isLoading.hide();
+            if (data.FaceFailTime > 4) {
+              weui.alert("人脸识别超过次数,请隔天再试", {
+                title: '中原银行温馨提示',
+                buttons: [{
+                  label: '确定',
+                  type: 'default',
+                  onClick: function () {
+                    window.location.replace('OpenCardOnline.html')
+                  }
+                }]
+              });
+            } else {
+              if (typeof data === "string") {
+                var data = JSON.parse(data)
+                alert(data._RejMsg)
+              } else {
+                alert(data._RejMsg);
+              }
+            }
+          }
+        }, function (erro) {
+        })
+      }
+    }
+  }) */
+  </script>
 </html>
