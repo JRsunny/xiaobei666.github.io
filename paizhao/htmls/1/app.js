@@ -92,14 +92,14 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   canvas = document.getElementById('canvasCemara');
   // 开始画布截取
   ctx = canvas.getContext('2d');
-  var _w = 250, _h = 160;
+  var _w = 300, _h = 192;
   if (video.videoWidth > 0)
   // alert('video宽度==='+video.videoWidth)
   // _h = video.videoHeight / (video.videoWidth / _w);
   canvas.setAttribute('width', _w);
   canvas.setAttribute('height', _h);
   ctx.fillRect(0, 0, _w, _h);
-  ctx.drawImage(video, 20, 20, _w+20, _h+20, 0, 0, _w, _h);
+  ctx.drawImage(video, 0, 0, _w, _h, 0, 0, _w, _h);
 
   var pictureFilefont= canvas.toDataURL();  //获取图片的DataURL
 
