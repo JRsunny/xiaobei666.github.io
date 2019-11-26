@@ -32,7 +32,7 @@ function gotDevices(mediaDevices) {
 
 // button.addEventListener('click', event => {
   document.getElementById("button").addEventListener('click', event => {
-    alert('6')
+    // alert('6')
   if (typeof currentStream !== 'undefined') {
     stopMediaTracks(currentStream);
   }
