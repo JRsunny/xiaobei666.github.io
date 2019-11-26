@@ -1,94 +1,103 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<title>中原银行</title>
-		<meta name="description" content="" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="format-detection" content="telephone=no" />
-    <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
-    <link rel="stylesheet" href="../../CardResource/css/base.css" />
-    
-    
-    <style type="text/css">
-      [v-cloak] {
-        display: none;
-      }
-      .InfoCheck {
-        margin: 0 auto;
-      }
-      .InfoCheck p {
-        margin-top:0.74rem;
-        text-align: center;
-        color:#333333;
-        font-size:0.14rem;
-      }
-      .input-file {
-        height:0.4rem;
-        width:3.46rem;
-        opacity: 0;
-        position: absolute;
-        left:50%;
-        top:1.46rem;
-        transform: translate(-50%,0);
-      }
-      .tips {
-        margin-top:0.24rem;
-        margin-left:0.14rem;
-      }
-      .tips p:first-child{
-        color:#333333;
-        font-size: 0.14rem;
-      }
-      .tips p:last-child{
-        font-size: 0.12rem;
-        color:#999999;
-        line-height: 0.2rem;
-      }
-    </style>
-	</head>
-	<body>
-    <div id="app">
-      <div class="OcrCheck">
-        <div class="common-header">拍照</div>
-        <div>
-          <div class="tips">
-              <p>证件照片要求</p>
-              <p>请拍摄你本人证件照片,拍摄时请保持边框完整、亮度均匀、为提高通过率</p>
-          </div>
 
-          <button class="weui-btn common-btn" id="btn-paizhao">点击拍照</button>
-          <button class="weui-btn common-btn" id="button">打开摄像头，开始拍照</button>
-          <!-- <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
-left: 12%;z-index: 9999;" src="./bg-zhengmian.png"> -->
-          <img id="imgs" style="position:absolute;z-index: 9999;" src="./bg-zhengmian.png">
+<head>
+  <meta charset="utf-8" />
+  <title>中原银行</title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="format-detection" content="telephone=no" />
+  <script src="../../CardResource/js/vue.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" href="../../CardResource/js/weui/weui.min.css" />
+  <link rel="stylesheet" href="../../CardResource/css/base.css" />
 
-          <video id="video" autoplay ></video>
-          <select id="select">
-            <option></option>
-          </select>
-          <canvas id="canvasCemara" class="canvasCemara" style="width:250px;height: 160px;" width="250"></canvas>
 
-          
+  <style type="text/css">
+    [v-cloak] {
+      display: none;
+    }
 
-          <!-- <input class="input-file"type="button" accept="image/*" multiple @change="idCardImgBtn" ref="OCR"> -->
-          <!-- <img   ref="OcrImage" v-show ="false"> -->
+    .InfoCheck {
+      margin: 0 auto;
+    }
+
+    .InfoCheck p {
+      margin-top: 0.74rem;
+      text-align: center;
+      color: #333333;
+      font-size: 0.14rem;
+    }
+
+    .input-file {
+      height: 0.4rem;
+      width: 3.46rem;
+      opacity: 0;
+      position: absolute;
+      left: 50%;
+      top: 1.46rem;
+      transform: translate(-50%, 0);
+    }
+
+    .tips {
+      margin-top: 0.24rem;
+      margin-left: 0.14rem;
+    }
+
+    .tips p:first-child {
+      color: #333333;
+      font-size: 0.14rem;
+    }
+
+    .tips p:last-child {
+      font-size: 0.12rem;
+      color: #999999;
+      line-height: 0.2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div class="OcrCheck">
+      <div class="common-header">拍照</div>
+      <div>
+        <div class="tips">
+          <p>证件照片要求</p>
+          <p>请拍摄你本人证件照片,拍摄时请保持边框完整、亮度均匀、为提高通过率</p>
         </div>
-      </div> 
-    </div>
-  </body>
-  <script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
-  <script src="../../CardResource/js/weui/weui.min.js"></script>
-  <script src="../../CardResource/js/base.js"></script>
-  <script src="../../CardResource/js/lrz.all.bundle.js"></script>
-  <script src="../../CardResource/js/prompt.js"></script>
-  <script src="./app.js"></script>
 
-  
-  <script>
-    
+        <button class="weui-btn common-btn" id="btn-paizhao">点击拍照</button>
+        <button class="weui-btn common-btn" id="button">打开摄像头，开始拍照</button>
+        <!-- <img id="imgs" style="position:absolute;padding: 20px; top: 18%;
+left: 12%;z-index: 9999;" src="./bg-zhengmian.png"> -->
+        <!-- 视频 -->
+        <div style="width:375px; height:210px;">
+          <img id="imgs" style="position:absolute;z-index: 9999;" src="./bg-zhengmian.png">
+          <video id="video" autoplay style="width:100%; height:100%; object-fit: fill"></video>
+
+        </div>
+        <select id="select">
+          <option></option>
+        </select>
+        <canvas id="canvasCemara" class="canvasCemara" style="width:250px;height: 160px;" width="250"></canvas>
+
+        <!-- <input class="input-file"type="button" accept="image/*" multiple @change="idCardImgBtn" ref="OCR"> -->
+        <!-- <img   ref="OcrImage" v-show ="false"> -->
+      </div>
+    </div>
+  </div>
+</body>
+<script src="../../CardResource/js/jquery-3.3.1.min.js"></script>
+<script src="../../CardResource/js/weui/weui.min.js"></script>
+<script src="../../CardResource/js/base.js"></script>
+<script src="../../CardResource/js/lrz.all.bundle.js"></script>
+<script src="../../CardResource/js/prompt.js"></script>
+<script src="./app.js"></script>
+
+
+<script>
+
   /* var app = new Vue({
     el: "#app",
     data:{
@@ -174,8 +183,8 @@ let currentStream;
             })
           }
           // console.log(that.dataurl)
-          
-        }   
+
+        }
       },
        // 压缩图片,获取原图--》canvas压缩--》新图片
       // compressImg (img) {
@@ -207,7 +216,7 @@ let currentStream;
       //         var  img = this
       //         that.compressImg(img)
       //         // that.postOrcImg()
-      //       } 
+      //       }
       //     }
       //   }
       // },
@@ -255,5 +264,6 @@ let currentStream;
       }
     }
   }) */
-  </script>
+</script>
+
 </html>
