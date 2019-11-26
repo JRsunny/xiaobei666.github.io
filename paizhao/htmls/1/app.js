@@ -39,10 +39,10 @@ function gotDevices(mediaDevices) {
   const videoConstraints = {};
   if (select.value === '') {
     videoConstraints.facingMode = 'environment';
-    alert(videoConstraints.facingMode)
+    // alert(videoConstraints.facingMode)
   } else {
     videoConstraints.deviceId = { exact: select.value };
-    alert(JSON.parse(videoConstraints))
+    // alert(JSON.parse(videoConstraints))
   }
   const constraints = {
     video: videoConstraints,
