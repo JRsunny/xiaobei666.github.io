@@ -13,6 +13,29 @@ function getUrlKey(name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
 
 }
+// 进入全屏
+function FullScreen(ele) {
+  // var ele = document.documentElement;
+  var ele = ele;
+  if (ele .requestFullscreen) {
+      ele .requestFullscreen();
+  } else if (ele .mozRequestFullScreen) {
+      ele .mozRequestFullScreen();
+  } else if (ele .webkitRequestFullScreen) {
+      ele .webkitRequestFullScreen();
+  }
+}
+//退出全屏
+function exitFullscreen() {
+  var de = document;
+  if (de.exitFullscreen) {
+      de.exitFullscreen();
+  } else if (de.mozCancelFullScreen) {
+      de.mozCancelFullScreen();
+  } else if (de.webkitCancelFullScreen) {
+      de.webkitCancelFullScreen();
+  }
+}
 
 function gotDevices(mediaDevices) {
   select.innerHTML = '';
@@ -53,6 +76,7 @@ function gotDevices(mediaDevices) {
     .then(stream => {
       currentStream = stream;
       video.srcObject = stream;
+      
       return navigator.mediaDevices.enumerateDevices();
     })
     .then(gotDevices)
@@ -64,22 +88,25 @@ function gotDevices(mediaDevices) {
 // 拍照按钮 canvas截屏
 document.getElementById("btn-paizhao").addEventListener("click", function () {
   var video = document.getElementById('video');
+  // FullScreen(video)
   canvas = document.getElementById('canvasCemara');
+  // 开始画布截取
   ctx = canvas.getContext('2d');
-  var _w = 320, _h = 500;
+  var _w = 250, _h = 160;
   if (video.videoWidth > 0)
-    // _h = video.videoHeight / (video.videoWidth / _w);
+  // alert('video宽度==='+video.videoWidth)
+  // _h = video.videoHeight / (video.videoWidth / _w);
   canvas.setAttribute('width', _w);
   canvas.setAttribute('height', _h);
   ctx.fillRect(0, 0, _w, _h);
-  ctx.drawImage(video, 0, 0, _w, _h);
+  ctx.drawImage(video, 20, 20, _w+20, _h+20, 0, 0, _w, _h);
 
   var pictureFilefont= canvas.toDataURL();  //获取图片的DataURL
 
   if(getUrlKey('pictureFileid') == 1){  // 正面
     window.localStorage.setItem('pictureFilefont', JSON.stringify(pictureFilefont));
     if(window.localStorage.getItem('pictureFilefont')){
-      window.location.href="./IdCardImage.html?pictureFilefont=1"
+      window.location.href="./idcard1.html?pictureFilefont=1"
     }
 
   }
@@ -87,7 +114,7 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
     window.localStorage.setItem('pictureFileback', JSON.stringify(pictureFilefont));
     if(window.localStorage.getItem('pictureFileback')){
 
-      window.location.href="./IdCardImage.html?pictureFilefont=2"
+      window.location.href="./idcard1.html?pictureFilefont=2"
     }
   }
 
