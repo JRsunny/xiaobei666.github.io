@@ -115,6 +115,9 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   canvas.setAttribute('width', _w);
   canvas.setAttribute('height', _h);
   ctx.fillRect(0, 0, _w, _h);
+
+  ctx.imageSmoothingEnabled = false;  // 去除锯齿重叠
+
   ctx.drawImage(video, 0, 0, _w, _h, 0, 0, _w, _h);
 
   var pictureFilefont= canvas.toDataURL();  //获取图片的DataURL
