@@ -180,9 +180,9 @@ left: 40%;z-index: 1000000;">拍摄</button>
     var video = document.getElementById('video2');
     var constraints = {
         audio: false,
-        video: true
+        // video: true
         // video:{ facingMode: "user" }
-        // video:{ facingMode: { exact: "environment" } }
+        video:{ facingMode: "environment"}
     };
     function successCallback(stream) {
         video.srcObject = stream;
