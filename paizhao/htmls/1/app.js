@@ -3,6 +3,8 @@ const button = document.getElementById('button');
 const select = document.getElementById('select');
 let currentStream;
 
+let isLoading = weui.loading('加载中');
+
 function stopMediaTracks(stream) {
   stream.getTracks().forEach(track => {
     track.stop();
@@ -13,6 +15,17 @@ function getUrlKey(name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) || [, ""])[1].replace(/\+/g, '%20')) || null
 
 }
+
+function successCallback(stream) {
+  video.srcObject = stream;
+  isLoading.hide()
+  // video.play();
+}
+function errorCallback(error) {
+  console.log("navigator.getUserMedia error: ", error);
+  //  $(".CameraTips").show();
+}
+
 // 进入全屏
 function FullScreen(ele) {
   // var ele = document.documentElement;
@@ -56,30 +69,37 @@ function gotDevices(mediaDevices) {
 // button.addEventListener('click', event => {
   document.getElementById("button").addEventListener('click', event => {
     // alert('6')
-  if (typeof currentStream !== 'undefined') {
-    stopMediaTracks(currentStream);
-  }
-  const videoConstraints = {};
-  if (select.value === '') {
-    videoConstraints.facingMode = 'environment';
-    // alert(videoConstraints.facingMode)
-  } else {
-    videoConstraints.deviceId = { exact: select.value };
-    // alert(JSON.parse(videoConstraints))
-  }
-  const constraints = {
+  // if (typeof currentStream !== 'undefined') {
+  //   stopMediaTracks(currentStream);
+  // }
+  // const videoConstraints = {};
+  // if (select.value === '') {
+  //   videoConstraints.facingMode = 'environment';
+  //   // alert(videoConstraints.facingMode)
+  // } else {
+  //   videoConstraints.deviceId = { exact: select.value };
+  //   // alert(JSON.parse(videoConstraints))
+  // }
+  /* const constraints = {
     video: videoConstraints,
     audio: false
+  }; */
+
+  const constraints = {
+    audio: false,
+    // video: true
+    // video:{ facingMode: "user" }
+    video:{ facingMode: "environment"}
   };
   navigator.mediaDevices
     .getUserMedia(constraints)
-    .then(stream => {
-      currentStream = stream;
-      video.srcObject = stream;
+    // .then(stream => {
+    //   currentStream = stream;
+    //   video.srcObject = stream;
       
-      return navigator.mediaDevices.enumerateDevices();
-    })
-    .then(gotDevices)
+    //   return navigator.mediaDevices.enumerateDevices();
+    // })
+    .then(successCallback)
     .catch(error => {
       console.error(error);
     });
@@ -120,4 +140,25 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
 
 });
 
-navigator.mediaDevices.enumerateDevices().then(gotDevices);
+// navigator.mediaDevices.enumerateDevices().then(gotDevices);
+
+
+
+const constraints = {
+  audio: false,
+  // video: true
+  // video:{ facingMode: "user" }
+  video:{ facingMode: "environment"}
+};
+navigator.mediaDevices
+  .getUserMedia(constraints)
+  // .then(stream => {
+  //   currentStream = stream;
+  //   video.srcObject = stream;
+    
+  //   return navigator.mediaDevices.enumerateDevices();
+  // })
+  .then(successCallback)
+  .catch(error => {
+    console.error(error);
+  });
