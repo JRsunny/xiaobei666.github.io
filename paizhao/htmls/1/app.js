@@ -17,7 +17,15 @@ function getUrlKey(name) {
 }
 
 function successCallback(stream) {
+  let imgs = document.getElementById("imgs")
+  if(getUrlKey('pictureFileid') == 1){
+    imgs.src="./bg-zhengmian.png"
+  }  // 正面
+  if(getUrlKey('pictureFileid') == 2){
+    imgs.src="./bg-fanmian.png"
+  } 
   video.srcObject = stream;
+  imgs.style="display:block;position:absolute;z-index: 9999;"
   isLoading.hide()
   // video.play();
 }
@@ -68,6 +76,8 @@ function gotDevices(mediaDevices) {
 
 // button.addEventListener('click', event => {
   document.getElementById("button").addEventListener('click', event => {
+  // FullScreen(video)
+
     // alert('6')
   // if (typeof currentStream !== 'undefined') {
   //   stopMediaTracks(currentStream);
@@ -108,7 +118,6 @@ function gotDevices(mediaDevices) {
 // 拍照按钮 canvas截屏
 document.getElementById("btn-paizhao").addEventListener("click", function () {
   var video = document.getElementById('video');
-  // FullScreen(video)
   canvas = document.getElementById('canvasCemara');
   // 开始画布截取
   ctx = canvas.getContext('2d');
