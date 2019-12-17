@@ -265,14 +265,21 @@
     },
     created () {
       var  that = this;
-      that.imgBaseUrl = location.protocol + "//" + location.host+"/pweixin/weixin/";
-      if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
-      this.isLoading = weui.loading('加载中');
+      that.imgBaseUrl = location.protocol + "//" + location.host+"/paizhao/";
+      var inputVal1 = JSON.parse(window.sessionStorage.getItem('pictureFilefont'));
+      var inputVal2 = JSON.parse(window.sessionStorage.getItem('pictureFileback'));
+      // if (pictureFile) {
+        that.showImg1 = false
+        that.idCardImage1 = inputVal1
+        that.idCardImage2 = inputVal2
+      // }
+      // if(location.host == "wbs.zyebank.com") that.imgBaseUrl='http://download.zybank.com.cn/weixinimage/';
+      // this.isLoading = weui.loading('加载中');
       // this.getParam = getParams();
     },
     mounted () {
-      this.getWeixinUser()
-      this.showCityInfo()
+      // this.getWeixinUser()
+      // this.showCityInfo()
     },
     methods: {
       // 获取用户appid
@@ -338,10 +345,12 @@
       getIdCardInfo () {
         var  that = this
         var pictureFile = JSON.parse(window.localStorage.getItem('pictureFile'))
+        var inputVal1 = JSON.parse(window.sessionStorage.getItem('pictureFilefont'));
+        var inputVal2 = JSON.parse(window.sessionStorage.getItem('pictureFileback'));
         if (pictureFile) {
           that.showImg1 = false
-          that.idCardImage1 = pictureFile.facade
-          that.idCardImage2 = pictureFile.back
+          that.idCardImage1 = inputVal1
+          that.idCardImage2 = inputVal2
         }
         var  parmars = {
           "pictureFile_facade": this.idCardImage1.substring(this.idCardImage1.indexOf(',')+1),
@@ -499,10 +508,12 @@
       },
       // 下一步
       toPage (murmur) {
+        
         var that = this
         this.isLoading = weui.loading('加载中');
+        window.location.href = 'OcrCheck.html' // 人脸识别
         // 信息校验
-        var  that = this
+        
         var  parmars = {
           "IsAvailable": this.IdInfo.IsAvailable,
           "CusName": this.IdInfo.CusName,

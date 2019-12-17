@@ -165,14 +165,15 @@
             <!-- <input class="input-file front" type="file" accept="image/*" capture="camera" multiple @change="idCardImgBtn(1)" ref="inputFile1">
             <img class="ImgFace" :src='imgBaseUrl+"CardResource/img/idCard1.png"'  v-if ="showImg1"> -->
             <img class="ImgFace" :src='imgBaseUrl+"CardResource/img/idCard1.png"' @click="idCardImgBtn(1)"  v-if ="showImg1">
-            <img   ref="idCardImage1" v-show ="!showImg1">
+            <img ref="idCardImage1" v-show ="!showImg1">
             <p>请拍摄身份证人脸正面</p>
           </div>
           <!-- 反面照 -->
           <div class="idCard idCard2">
             <!-- <input class="input-file verso" type="file" accept="image/*" multiple @change="idCardImgBtn(2)" ref="inputFile2"> -->
             <img class="ImgFace" :src='imgBaseUrl+"CardResource/img/idCard2.png"' @click="idCardImgBtn(2)"  v-if ="showImg2">
-            <img v-show ="!showImg2" ref="idCardImage2" >
+            
+            <img ref="idCardImage2" v-show ="!showImg2">
             <p>请拍摄身份证国徽面</p>
           </div>
         </div>
@@ -211,23 +212,30 @@
     mounted () {
       this.getParam = getParams();
 
-      var inputVal1 = JSON.parse(window.localStorage.getItem('pictureFilefont'));
-      var inputVal2 = JSON.parse(window.localStorage.getItem('pictureFileback'));
-        if(this.getUrlKey('pictureFilefont')==1){
+      var inputVal1 = JSON.parse(window.sessionStorage.getItem('pictureFilefont'));
+      var inputVal2 = JSON.parse(window.sessionStorage.getItem('pictureFileback'));
+        if(this.getUrlKey('pictureFilefont')==1 && inputVal1){
           this.$refs.idCardImage1.src = inputVal1
           this.dataurl1 = inputVal1
           this.showImg1 = false
-          // this.$refs.idCardImage1.width = '250'
-          // this.$refs.idCardImage1.height = '160'
+          if(inputVal2){
+            this.$refs.idCardImage2.src = inputVal2
+            this.dataurl2 = inputVal2
+            this.showImg2 = false
+            // this.$refs.idCardImage1.width = '250'
+            // this.$refs.idCardImage1.height = '160'
+          }
         }
-        if(this.getUrlKey('pictureFilefont')==2){
-          this.$refs.idCardImage2.src = inputVal2
-          this.dataurl2 = inputVal2
-          this.showImg2 = false
-          // this.$refs.idCardImage1.width = '250'
-          // this.$refs.idCardImage1.height = '160'
+        if(this.getUrlKey('pictureFilefont')==2 && inputVal2){
+            this.$refs.idCardImage2.src = inputVal2
+            this.dataurl2 = inputVal2
+            this.showImg2 = false
+          if(inputVal1){
+            this.$refs.idCardImage1.src = inputVal1
+            this.dataurl1 = inputVal1
+            this.showImg1 = false
         }
-
+      }
     },
     methods: {
       getUrlKey: function (name) {
@@ -280,9 +288,9 @@
         if (this.idCardImgCheck() === false) {
           return false
         }
-        // sessionStorage.setItem('pictureFile', JSON.stringify(params));
-        // window.location.href = page + '.html'
-        this.jsSDKInit()
+        sessionStorage.setItem('pictureFile', JSON.stringify(params));
+        window.location.href = page + '.html'
+        // this.jsSDKInit()
       }
     }
   })

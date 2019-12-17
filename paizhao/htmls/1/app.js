@@ -135,15 +135,15 @@ document.getElementById("btn-paizhao").addEventListener("click", function () {
   var pictureFilefont= canvas.toDataURL();  //获取图片的DataURL
 
   if(getUrlKey('pictureFileid') == 1){  // 正面
-    window.localStorage.setItem('pictureFilefont', JSON.stringify(pictureFilefont));
-    if(window.localStorage.getItem('pictureFilefont')){
+    window.sessionStorage.setItem('pictureFilefont', JSON.stringify(pictureFilefont));
+    if(window.sessionStorage.getItem('pictureFilefont')){
       window.location.href="./idcard1.html?pictureFilefont=1"
     }
 
   }
   if(getUrlKey('pictureFileid') == 2){  // 反面
-    window.localStorage.setItem('pictureFileback', JSON.stringify(pictureFilefont));
-    if(window.localStorage.getItem('pictureFileback')){
+    window.sessionStorage.setItem('pictureFileback', JSON.stringify(pictureFilefont));
+    if(window.sessionStorage.getItem('pictureFileback')){
 
       window.location.href="./idcard1.html?pictureFilefont=2"
     }
